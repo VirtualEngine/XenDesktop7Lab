@@ -1,0 +1,8 @@
+
+Requires the following DSC resources:
+
+cCitrixXenDesktop7 - https://github.com/VirtualEngine/cCitrixXenDesktop7
+cPfxCertificate - https://github.com/VirtualEngine/cPfxCertificate
+xCredSSP - https://github.com/Powershell/xCredSSP
+xWebAdministration - https://github.com/Powershell/xWebAdministration
+
