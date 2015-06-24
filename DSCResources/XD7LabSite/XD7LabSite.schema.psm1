@@ -33,66 +33,66 @@ configuration XD7LabSite {
         DelegateComputers = $DelegatedComputers;
     }
         
-    cXD7Feature XD7Controller {
+    XD7Feature XD7Controller {
         Role = 'Controller';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    cXD7Feature XD7Studio {
+    XD7Feature XD7Studio {
         Role = 'Studio';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    cXD7Database XD7SiteDatabase {
+    XD7Database XD7SiteDatabase {
         SiteName = $SiteName;
         DatabaseServer = $DatabaseServer;
         DatabaseName = $SiteDatabaseName;
         Credential = $Credential;
         DataStore = 'Site';
-        DependsOn = '[cXD7Feature]XD7Controller';
+        DependsOn = '[XD7Feature]XD7Controller';
     }
 
-    cXD7Database XD7SiteLoggingDatabase {
+    XD7Database XD7SiteLoggingDatabase {
         SiteName = $SiteName;
         DatabaseServer = $DatabaseServer;
         DatabaseName = $LoggingDatabaseName;
         Credential = $Credential;
         DataStore = 'Logging';
-        DependsOn = '[cXD7Feature]XD7Controller';
+        DependsOn = '[XD7Feature]XD7Controller';
     }
     
-    cXD7Database XD7SiteMonitorDatabase {
+    XD7Database XD7SiteMonitorDatabase {
         SiteName = $SiteName;
         DatabaseServer = $DatabaseServer;
         DatabaseName = $MonitorDatabaseName;
         Credential = $Credential;
         DataStore = 'Monitor';
-        DependsOn = '[cXD7Feature]XD7Controller';
+        DependsOn = '[XD7Feature]XD7Controller';
     }
         
-    cXD7Site XD7Site {
+    XD7Site XD7Site {
         SiteName = $SiteName;
         DatabaseServer = $DatabaseServer;
         SiteDatabaseName = $SiteDatabaseName;
         LoggingDatabaseName = $LoggingDatabaseName;
         MonitorDatabaseName = $MonitorDatabaseName;
         Credential = $Credential;
-        DependsOn = '[cXD7Feature]XD7Controller','[cXD7Database]XD7SiteDatabase','[cXD7Database]XD7SiteLoggingDatabase','[cXD7Database]XD7SiteMonitorDatabase';
+        DependsOn = '[XD7Feature]XD7Controller','[XD7Database]XD7SiteDatabase','[XD7Database]XD7SiteLoggingDatabase','[XD7Database]XD7SiteMonitorDatabase';
     }
 
-    cXD7SiteLicense XD7SiteLicense {
+    XD7SiteLicense XD7SiteLicense {
         LicenseServer = $LicenseServer;
         Credential = $Credential;
-        DependsOn = '[cXD7Site]XD7Site';
+        DependsOn = '[XD7Site]XD7Site';
     }
 
     foreach ($administrator in $SiteAdministrators) {
-        cXD7Administrator $administrator {
+        XD7Administrator $administrator {
             Name = $administrator;
             Credential = $Credential;
         }
 
-        cXD7Role "$($administrator)FullAdministrator" {
+        XD7Role "$($administrator)FullAdministrator" {
             Name = 'Full Administrator';
             Members = $administrator;
             Credential = $Credential;
