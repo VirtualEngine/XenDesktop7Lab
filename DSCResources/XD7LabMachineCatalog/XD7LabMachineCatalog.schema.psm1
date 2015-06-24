@@ -21,7 +21,7 @@ configuration XD7LabMachineCatalog {
     Import-DscResource -ModuleName CitrixXenDesktop7;
     $resourceName = $Name.Replace(' ','_');
 
-    cXD7Catalog "Catalog_$resourceName" {
+    XD7Catalog "Catalog_$resourceName" {
         Name = $Name;
         Description = 'Manual machine catalog provisioned by DSC';
         Allocation = $Allocation;
@@ -31,10 +31,10 @@ configuration XD7LabMachineCatalog {
         Credential = $Credential;
     }
 
-    cXD7CatalogMachine "Catalog_$($resourceName)_Machines" {
+    XD7CatalogMachine "Catalog_$($resourceName)_Machines" {
         Name = $Name;
         Members = $ComputerName
         Credential = $Credential;
-        DependsOn = "[cXD7Catalog]Catalog_$resourceName";
+        DependsOn = "[XD7Catalog]Catalog_$resourceName";
     }
 }

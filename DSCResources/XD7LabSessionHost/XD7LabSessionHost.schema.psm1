@@ -17,16 +17,16 @@ configuration XD7LabSessionHost {
         }
     }
         
-    cXD7VDAFeature XD7SessionVDA {
+    XD7VDAFeature XD7SessionVDA {
         Role = 'SessionVDA';
         SourcePath = $XenDesktopMediaPath;
         DependsOn = '[WindowsFeature]RDS-RD-Server';
     }
 
     foreach ($controller in $ControllerAddress) {
-        cXD7VDAController "XD7VDA_$controller" {
+        XD7VDAController "XD7VDA_$controller" {
             Name = $controller;
-            DependsOn = '[cXD7VDAFeature]XD7SessionVDA';
+            DependsOn = '[XD7VDAFeature]XD7SessionVDA';
         }
     }
 

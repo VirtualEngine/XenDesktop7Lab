@@ -23,28 +23,28 @@ configuration XD7LabController {
         DelegateComputers = $DelegatedComputers;
     }
         
-    cXD7Feature XD7Controller {
+    XD7Feature XD7Controller {
         Role = 'Controller';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    cXD7Feature XD7Studio {
+    XD7Feature XD7Studio {
         Role = 'Studio';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    cXD7WaitForSite WaitForXD7Site {
+    XD7WaitForSite WaitForXD7Site {
         SiteName = $SiteName;
         ExistingControllerName = $ExistingControllerAddress;
         Credential = $Credential;
-        DependsOn = '[cXD7Feature]XD7Controller';
+        DependsOn = '[XD7Feature]XD7Controller';
     }
         
-    cXD7Controller XD7ControllerJoin {
+    XD7Controller XD7ControllerJoin {
         SiteName = $SiteName;
         ExistingControllerName = $ExistingControllerAddress;
         Credential = $Credential;
-        DependsOn = '[cXD7Feature]XD7Controller','[cXD7WaitForSite]WaitForXD7Site';
+        DependsOn = '[XD7Feature]XD7Controller','[XD7WaitForSite]WaitForXD7Site';
     }
 
 }
