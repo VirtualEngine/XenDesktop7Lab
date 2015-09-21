@@ -24,7 +24,7 @@ configuration XD7LabSessionHost {
     }
 
     foreach ($controller in $ControllerAddress) {
-        cXD7VDAController "XD7VDA_$controller" {
+        XD7VDAController "XD7VDA_$controller" {
             Name = $controller;
             DependsOn = '[XD7VDAFeature]XD7SessionVDA';
         }

@@ -60,7 +60,7 @@ configuration XD7LabStorefrontHttps {
             Value = $controller;
             IsAttribute = $false;
             WebsitePath = 'IIS:\Sites\Default Web Site\Director';
-            DependsOn = '[WindowsFeature]Web-Server','[cXD7Feature]XD7Director';
+            DependsOn = '[WindowsFeature]Web-Server','[XD7Feature]XD7Director';
         }
     }
 
