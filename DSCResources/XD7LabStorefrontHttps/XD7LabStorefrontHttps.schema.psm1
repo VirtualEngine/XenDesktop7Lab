@@ -49,7 +49,7 @@ configuration XD7LabStorefrontHttps {
 
     XD7Feature XD7Director {
         Role = 'Director';
-        SourcePath = $XenDesktopMediaPath;#
+        SourcePath = $XenDesktopMediaPath;
         DependsOn = '[WindowsFeature]Web-Server';
     }
 
@@ -73,7 +73,7 @@ configuration XD7LabStorefrontHttps {
         Type = 'File';
     }
 
-    cPfxCertificate "PfxCertificate_$filename" {
+    cPfxCertificate PfxCertificate {
         Thumbprint = $PfxCertificateThumbprint;
         Location = 'LocalMachine';
         Store = 'My';
@@ -89,6 +89,6 @@ configuration XD7LabStorefrontHttps {
             MSFT_xWebBindingInformation  { Protocol = 'HTTPS'; Port = 443; CertificateThumbprint = $PfxCertificateThumbprint; CertificateStoreName = 'My'; }
             MSFT_xWebBindingInformation  { Protocol = 'HTTP'; Port = 80; }
         )
-        DependsOn = '[WindowsFeature]Web-Server',"[cPfxCertificate]PfxCertificate_$filename";
+        DependsOn = '[WindowsFeature]Web-Server','[cPfxCertificate]PfxCertificate';
     }
 }

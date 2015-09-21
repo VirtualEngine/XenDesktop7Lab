@@ -87,16 +87,16 @@ configuration XD7LabSite {
     }
 
     foreach ($administrator in $SiteAdministrators) {
-        XD7Administrator $administrator {
+        XD7Administrator $administrator.Replace(' ','') {
             Name = $administrator;
             Credential = $Credential;
         }
+    }
 
-        XD7Role "$($administrator)FullAdministrator" {
-            Name = 'Full Administrator';
-            Members = $administrator;
-            Credential = $Credential;
-        }
+    XD7Role 'FullAdministrators' {
+        Name = 'Full Administrator';
+        Members =  $SiteAdministrators;
+        Credential = $Credential;
     }
 
 }
