@@ -22,7 +22,7 @@ configuration XD7LabLicenseServer {
         }
     }
         
-    cXD7Feature XD7License {
+    XD7Feature XD7License {
         Role = 'Licensing';
         SourcePath = $XenDesktopMediaPath;
     }

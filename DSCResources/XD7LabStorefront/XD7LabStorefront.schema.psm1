@@ -35,13 +35,13 @@ configuration XD7LabStorefront {
         }
     }
 
-    cXD7Feature XD7StoreFront {
+    XD7Feature XD7StoreFront {
         Role = 'Storefront';
         SourcePath = $XenDesktopMediaPath;
         DependsOn = '[WindowsFeature]Web-Server';
     }
 
-    cXD7Feature XD7Director {
+    XD7Feature XD7Director {
         Role = 'Director';
         SourcePath = $XenDesktopMediaPath;#
         DependsOn = '[WindowsFeature]Web-Server';

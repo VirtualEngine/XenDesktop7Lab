@@ -21,7 +21,7 @@ configuration XD7LabDeliveryGroup {
     Import-DscResource -ModuleName CitrixXenDesktop7;
     $resourceName = $Name.Replace(' ','_');
 
-    cXD7DesktopGroup "DesktopGroup_$resourceName" {
+    XD7DesktopGroup "DesktopGroup_$resourceName" {
         Name = $Name;
         Description = $Description;
         DeliveryType = $DeliveryType;
@@ -30,33 +30,33 @@ configuration XD7LabDeliveryGroup {
         Credential = $Credential;
     }
 
-    cXD7DesktopGroupMember "DesktopGroup_$($resourceName)_Machines" {
+    XD7DesktopGroupMember "DesktopGroup_$($resourceName)_Machines" {
         Name = $Name;
         Members = $ComputerName;
         Credential = $Credential;
-        DependsOn = "[cXD7DesktopGroup]DesktopGroup_$resourceName";
+        DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
     }
 
-    cXD7EntitlementPolicy "DesktopGroup_$($resourceName)_Entitlement" {
+    XD7EntitlementPolicy "DesktopGroup_$($resourceName)_Entitlement" {
         DeliveryGroup = $Name;
         EntitlementType = 'Desktop';
         Credential = $Credential;
-        DependsOn = "[cXD7DesktopGroup]DesktopGroup_$resourceName";
+        DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
     }
 
-    cXD7AccessPolicy "DesktopGroup_$($resourceName)_Direct" {
+    XD7AccessPolicy "DesktopGroup_$($resourceName)_Direct" {
         DeliveryGroup = $Name;
         AccessType = 'Direct';
         Credential = $Credential;
-        DependsOn = "[cXD7DesktopGroup]DesktopGroup_$resourceName";
+        DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
         IncludeUsers = $Users;
     }
 
-    cXD7AccessPolicy "DesktopGroup_$($resourceName)_AG" {
+    XD7AccessPolicy "DesktopGroup_$($resourceName)_AG" {
         DeliveryGroup = $Name;
         AccessType = 'AccessGateway';
         Credential = $Credential;
-        DependsOn = "[cXD7DesktopGroup]DesktopGroup_$resourceName";
+        DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
         IncludeUsers = $Users;
     }
 
