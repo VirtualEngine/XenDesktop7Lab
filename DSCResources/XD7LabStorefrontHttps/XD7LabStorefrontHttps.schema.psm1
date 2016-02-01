@@ -12,7 +12,7 @@ configuration XD7LabStorefrontHttps {
         [Parameter(Mandatory)] [System.String[]] $ControllerAddress
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7, xWebAdministration, cPfxCertificate;
+    Import-DscResource -ModuleName CitrixXenDesktop7, xWebAdministration, xCertificate;
 
     $features = @(
         'NET-Framework-45-ASPNET',
@@ -68,19 +68,12 @@ configuration XD7LabStorefrontHttps {
     $filename = [System.IO.Path]::GetFileName($PfxCertificatePath);
     $destinationFilePath = Join-Path -Path "$env:SystemDrive\Source" -ChildPath $filename;
         
-    File SSLCert {
-        DestinationPath = $destinationFilePath;
-        SourcePath = $PfxCertificatePath;
-        Type = 'File';
-    }
-
-    cPfxCertificate PfxCertificate {
+    xPfxImport PfxCertificate {
         Thumbprint = $PfxCertificateThumbprint;
         Location = 'LocalMachine';
         Store = 'My';
-        Path = $destinationFilePath
+        Path = $destinationFilePath;
         Credential = $PfxCertificateCredential;
-        DependsOn = '[File]SSLCert';
     }
 
     xWebSite DefaultWebSite {
@@ -90,6 +83,7 @@ configuration XD7LabStorefrontHttps {
             MSFT_xWebBindingInformation  { Protocol = 'HTTPS'; Port = 443; CertificateThumbprint = $PfxCertificateThumbprint; CertificateStoreName = 'My'; }
             MSFT_xWebBindingInformation  { Protocol = 'HTTP'; Port = 80; }
         )
-        DependsOn = '[WindowsFeature]Web-Server','[cPfxCertificate]PfxCertificate';
+        DependsOn = '[WindowsFeature]Web-Server','[xPfxImport]PfxCertificate';
     }
-}
+
+} #end configuration XD7LabStorefrontHttps

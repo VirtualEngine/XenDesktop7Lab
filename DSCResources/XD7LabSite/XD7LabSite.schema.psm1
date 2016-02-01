@@ -19,7 +19,11 @@ configuration XD7LabSite {
         ## Citrix XenDesktop Logging database name
         [Parameter()] [System.String] $LoggingDatabaseName = "$($SiteName)Logging",
         ## Citrix XenDesktop Monitor database name
-        [Parameter()] [System.String] $MonitorDatabaseName = "$($SiteName)Monitor"
+        [Parameter()] [System.String] $MonitorDatabaseName = "$($SiteName)Monitor",
+        ## Citrix XenDesktop licensed edition
+        [Parameter()] [ValidateSet('PLT','ENT','APP')] [System.String] $LicenseEdition = 'PLT',
+        ## Citrix XenDesktop licensing model
+        [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice'
     )
 
     Import-DscResource -ModuleName xCredSSP, CitrixXenDesktop7;
@@ -83,6 +87,8 @@ configuration XD7LabSite {
     XD7SiteLicense XD7SiteLicense {
         LicenseServer = $LicenseServer;
         Credential = $Credential;
+        LicenseEdition = $LicenseEdition;
+        LicenseModel = $LicenseModel;
         DependsOn = '[XD7Site]XD7Site';
     }
 
