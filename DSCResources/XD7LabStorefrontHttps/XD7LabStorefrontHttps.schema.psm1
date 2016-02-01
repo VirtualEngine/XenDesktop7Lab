@@ -25,6 +25,7 @@ configuration XD7LabStorefrontHttps {
         'Web-Http-Logging',
         'Web-Filtering',
         'Web-Basic-Auth',
+        'Web-Client-Auth',
         'Web-Windows-Auth',
         'Web-Net-Ext45',
         'Web-AppInit',
