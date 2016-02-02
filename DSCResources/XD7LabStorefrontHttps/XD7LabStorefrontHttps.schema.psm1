@@ -1,15 +1,24 @@
 configuration XD7LabStorefrontHttps {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [System.String] $XenDesktopMediaPath,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [System.String] $XenDesktopMediaPath,
+        
         ## Personal information exchange (Pfx) ertificate file path
-        [Parameter(Mandatory)] [System.String] $PfxCertificatePath,
+        [Parameter(Mandatory)]
+        [System.String] $PfxCertificatePath,
+        
         ## Pfx certificate thumbprint
-        [Parameter(Mandatory)] [System.String] $PfxCertificateThumbprint,
+        [Parameter(Mandatory)]
+        [System.String] $PfxCertificateThumbprint,
+        
         ## Pfx certificate password
-        [Parameter(Mandatory)] [System.Management.Automation.PSCredential] $PfxCertificateCredential,
+        [Parameter(Mandatory)]
+        [System.Management.Automation.PSCredential] $PfxCertificateCredential,
+        
         ## XenDesktop controller address for Director connectivity
-        [Parameter(Mandatory)] [System.String[]] $ControllerAddress
+        [Parameter(Mandatory)]
+        [System.String[]] $ControllerAddress
     )
 
     Import-DscResource -ModuleName XenDesktop7, xWebAdministration, xCertificate;
@@ -64,15 +73,12 @@ configuration XD7LabStorefrontHttps {
             DependsOn = '[WindowsFeature]Web-Server','[XD7Feature]XD7Director';
         }
     }
-
-    $filename = [System.IO.Path]::GetFileName($PfxCertificatePath);
-    $destinationFilePath = Join-Path -Path "$env:SystemDrive\Source" -ChildPath $filename;
-        
+       
     xPfxImport PfxCertificate {
         Thumbprint = $PfxCertificateThumbprint;
         Location = 'LocalMachine';
         Store = 'My';
-        Path = $destinationFilePath;
+        Path = $PfxCertificatePath;
         Credential = $PfxCertificateCredential;
     }
 

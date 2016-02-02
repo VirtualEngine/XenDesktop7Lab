@@ -1,9 +1,12 @@
 configuration XD7LabStorefront {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [System.String] $XenDesktopMediaPath,
+        [Parameter(Mandatory)]
+        [System.String] $XenDesktopMediaPath,
+        
         ## XenDesktop controller address for Director
-        [Parameter(Mandatory)] [System.String[]] $ControllerAddress
+        [Parameter(Mandatory)]
+        [System.String[]] $ControllerAddress
     )
 
     Import-DscResource -ModuleName XenDesktop7, xWebAdministration;

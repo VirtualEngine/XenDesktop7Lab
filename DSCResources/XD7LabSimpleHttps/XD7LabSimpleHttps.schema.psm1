@@ -1,4 +1,4 @@
-configuration XD7LabSimple {
+configuration XD7LabSimpleHttps {
      param (
         ## Citrix XenDesktop installation source root
         [Parameter(Mandatory)]
@@ -27,6 +27,18 @@ configuration XD7LabSimple {
         ## Domain FQDN
         [Parameter(Mandatory)]
         [System.String] $DomainName,
+
+        ## Personal information exchange (Pfx) ertificate file path
+        [Parameter(Mandatory)]
+        [System.String] $PfxCertificatePath,
+        
+        ## Pfx certificate thumbprint
+        [Parameter(Mandatory)]
+        [System.String] $PfxCertificateThumbprint,
+        
+        ## Pfx certificate password
+        [Parameter(Mandatory)]
+        [System.Management.Automation.PSCredential] $PfxCertificateCredential,
         
         ## Delivery group active directory user/groups
         [Parameter()] [ValidateNotNullOrEmpty()]
@@ -49,7 +61,7 @@ configuration XD7LabSimple {
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
-    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefront, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog, XD7LabDeliveryGroup;
+    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefrontHttps, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog, XD7LabDeliveryGroup;
 
     ## Create ServerName and ServerName.DomainName names
     if ($ServerName.Contains('.')) {
@@ -75,9 +87,12 @@ configuration XD7LabSimple {
         RDSLicenseServer = $ServerName;
     }
     
-    XD7LabStoreFront XD7StoreFront {
+    XD7LabStoreFrontHttps XD7StoreFrontHttps {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         ControllerAddress = $ServerName;
+        PfxCertificatePath = $PfxCertificatePath;
+        PfxCertificateThumbprint = $PfxCertificateThumbprint;
+        PfxCertificateCredential = $PfxCertificateCredential;
     }
     
     XD7LabLicenseServer XD7LicenseServer {
