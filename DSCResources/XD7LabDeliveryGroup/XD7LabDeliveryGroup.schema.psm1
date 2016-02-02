@@ -18,7 +18,7 @@ configuration XD7LabDeliveryGroup {
         [Parameter(Mandatory)] [System.String[]] $Users
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
     $resourceName = $Name.Replace(' ','_');
 
     XD7DesktopGroup "DesktopGroup_$resourceName" {
@@ -60,4 +60,4 @@ configuration XD7LabDeliveryGroup {
         IncludeUsers = $Users;
     }
 
-}
+} #end configuration XD7LabDeliveryGroup

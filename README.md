@@ -1,7 +1,7 @@
-The CitrixXenDesktop7Lab composite DSC resources mask some of the underlying implementation/complexities
-of the individual [CitrixXenDesktop7](https://github.com/VirtualEngine/CitrixXenDesktop7) DSC resources.
-The composite CitrixXenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.0, v7.1, v7.5 or v7.6 via
-Desired State Configuration (DSC).
+The XenDesktop7Lab composite DSC resources mask some of the underlying implementation/complexities
+of the individual [XenDesktop7](https://github.com/VirtualEngine/XenDesktop7) DSC resources.
+The composite XenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.0, v7.1, v7.5, v7.6
+or v7.7 via PowerShell Desired State Configuration (DSC).
 
 This module contains the following DSC resources:
 
@@ -26,7 +26,7 @@ This module contains the following DSC resources:
 ###Requirements
 There are __dependencies__ on the following DSC resources:
 
-* CitrixXenDesktop7 - https://github.com/VirtualEngine/CitrixXenDesktop7
-* cPfxCertificate - https://github.com/VirtualEngine/cPfxCertificate
+* XenDesktop7 - https://github.com/VirtualEngine/XenDesktop7
+* xCertificate - https://github.com/Powershell/xCertificate
 * xCredSSP - https://github.com/Powershell/xCredSSP
 * xWebAdministration - https://github.com/Powershell/xWebAdministration

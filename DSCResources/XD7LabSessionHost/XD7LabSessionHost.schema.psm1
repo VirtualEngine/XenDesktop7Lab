@@ -8,7 +8,7 @@ configuration XD7LabSessionHost {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [System.String] $RDSLicenseServer
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
 
     foreach ($feature in @('RDS-RD-Server', 'Remote-Assistance', 'Desktop-Experience')) {
         WindowsFeature $feature {
@@ -44,4 +44,4 @@ configuration XD7LabSessionHost {
         ValueType = 'Dword';
     }
 
-}
+} #end configuration XD7LabSessionHost

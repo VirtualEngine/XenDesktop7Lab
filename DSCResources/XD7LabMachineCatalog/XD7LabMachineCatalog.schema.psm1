@@ -18,7 +18,7 @@ configuration XD7LabMachineCatalog {
         [Parameter(Mandatory)] [System.String[]] $ComputerName
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
     $resourceName = $Name.Replace(' ','_');
 
     XD7Catalog "Catalog_$resourceName" {
@@ -37,4 +37,5 @@ configuration XD7LabMachineCatalog {
         Credential = $Credential;
         DependsOn = "[XD7Catalog]Catalog_$resourceName";
     }
-}
+
+} #end configuration XD7LabMachineCatalog

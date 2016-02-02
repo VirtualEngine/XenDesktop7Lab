@@ -26,7 +26,7 @@ configuration XD7LabSite {
         [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice'
     )
 
-    Import-DscResource -ModuleName xCredSSP, CitrixXenDesktop7;
+    Import-DscResource -ModuleName xCredSSP, XenDesktop7;
 
     xCredSSP CredSSPServer {
         Role = 'Server';
@@ -105,4 +105,4 @@ configuration XD7LabSite {
         Credential = $Credential;
     }
 
-}
+} #end configuration XD7LabSite

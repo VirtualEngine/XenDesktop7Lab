@@ -12,7 +12,7 @@ configuration XD7LabController {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [System.String[]] $DelegatedComputers
     )
 
-    Import-DscResource -ModuleName xCredSSP, CitrixXenDesktop7;
+    Import-DscResource -ModuleName xCredSSP, XenDesktop7;
 
     xCredSSP CredSSPServer {
         Role = 'Server';
@@ -47,4 +47,4 @@ configuration XD7LabController {
         DependsOn = '[XD7Feature]XD7Controller','[XD7WaitForSite]WaitForXD7Site';
     }
 
-}
+} #end configuration XD7LabController

@@ -4,6 +4,6 @@
     GUID = '481edc2b-4aff-45cf-9860-e4c05aac0506';
     Author = 'Iain Brighton';
     CompanyName = 'Virtual Engine';
-    Copyright = '(c) 2015 Virtual Engine Limited. All rights reserved.';
+    Copyright = '(c) 2016 Virtual Engine Limited. All rights reserved.';
     Description = 'Virtual Engine Citrix XenDesktop 7.x session host DSC composite resource.';
 }

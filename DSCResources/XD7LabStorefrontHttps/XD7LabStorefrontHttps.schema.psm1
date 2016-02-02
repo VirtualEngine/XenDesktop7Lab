@@ -12,7 +12,7 @@ configuration XD7LabStorefrontHttps {
         [Parameter(Mandatory)] [System.String[]] $ControllerAddress
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7, xWebAdministration, xCertificate;
+    Import-DscResource -ModuleName XenDesktop7, xWebAdministration, xCertificate;
 
     $features = @(
         'NET-Framework-45-ASPNET',

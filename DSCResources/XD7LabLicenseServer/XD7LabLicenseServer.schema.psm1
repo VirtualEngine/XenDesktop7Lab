@@ -10,7 +10,7 @@ configuration XD7LabLicenseServer {
         [Parameter()] [System.String[]] $CitrixLicensePath
     )
 
-    Import-DscResource -ModuleName CitrixXenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
 
     if ($InstallRDSLicensingRole) {
         WindowsFeature RDSLicensing {
@@ -38,4 +38,4 @@ configuration XD7LabLicenseServer {
         $counter++;
     }
 
-}
+} #end configuration XD7LabLicenseServer
