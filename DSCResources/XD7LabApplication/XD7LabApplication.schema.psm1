@@ -13,7 +13,7 @@ configuration XD7LabApplication {
         
         ## Citrix XenDesktop 7 desktop delivery group name
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String] $DeliveryGroupName = 'Default Desktop',
+        [System.String] $DesktopGroupName = 'Default Desktop',
         
         ## Application executable arguments
         [Parameter()] [AllowNull()]
@@ -33,12 +33,12 @@ configuration XD7LabApplication {
         [System.Boolean] $Enabled = $true,
         
         [Parameter()] [ValidateNotNull()]
-        [System.Boolean] $Visible = $true,
+        [System.Boolean] $Visible = $true
     )
     
-    Import-DscResource -Name XenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
     
-    $resourceId = '{0}_{1}' -f $DeliveryGroupName.Replace(' ','_'), $Name;
+    $resourceId = '{0}_{1}' -f $DesktopGroupName.Replace(' ','_'), $Name;
     
     if ($PSBoundParameters.ContainsKey('DisplayName')) {
         XD7DesktopGroupApplication $resourceId {
