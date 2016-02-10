@@ -57,7 +57,15 @@ configuration XD7LabSimpleHttps {
         [System.String] $DeliveryGroupDescription = 'Virtual Engine Lab',
 
         ## Citrix XenDesktop licensing model
-        [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice'
+        [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice',
+        
+        ## Install Microsoft RDS license server role
+        [Parameter()]
+        [System.Boolean] $InstallRDSLicensingRole = $true,
+        
+        ## RDS license server - defaults to $ServerName
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String] $RDSLicenseServer = $ServerName
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
@@ -84,7 +92,7 @@ configuration XD7LabSimpleHttps {
     XD7LabSessionHost XD7SessionHost {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         ControllerAddress = $ServerName;
-        RDSLicenseServer = $ServerName;
+        RDSLicenseServer = $RDSLicenseServer;
     }
     
     XD7LabStoreFrontHttps XD7StoreFrontHttps {
@@ -97,7 +105,7 @@ configuration XD7LabSimpleHttps {
     
     XD7LabLicenseServer XD7LicenseServer {
         XenDesktopMediaPath = $XenDesktopMediaPath;
-        InstallRDSLicensingRole = $true;
+        InstallRDSLicensingRole = $InstallRDSLicensingRole;
         CitrixLicensePath = $CitrixLicensePath;
     }
 

@@ -1,13 +1,20 @@
 configuration XD7LabLicenseServer {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [System.String] $XenDesktopMediaPath,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [System.String] $XenDesktopMediaPath,
+        
         ## Active Directory domain account used to download the Citrix license file(s)
-        [Parameter()] [System.Management.Automation.PSCredential] $Credential,
+        [Parameter()]
+        [System.Management.Automation.PSCredential] $Credential,
+
         ## Install Microsoft RDS license server role
-        [Parameter()] [Switch] $InstallRDSLicensingRole,
+        [Parameter()]
+        [System.Boolean] $InstallRDSLicensingRole = $true,
+        
         ## Path Citrix XenDesktop license file(s)
-        [Parameter()] [System.String[]] $CitrixLicensePath
+        [Parameter()]
+        [System.String[]] $CitrixLicensePath
     )
 
     Import-DscResource -ModuleName XenDesktop7;

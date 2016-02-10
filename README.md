@@ -6,6 +6,8 @@ or v7.7 via PowerShell Desired State Configuration (DSC).
 This module contains the following DSC resources:
 
 ###Included Resources
+* XD7LabApplication
+ * Adds a local or published application to a desktop delivery group.
 * XD7LabController
  * Adds a controller to an existing XenDesktop site.
 * XD7LabDeliveryGroup
