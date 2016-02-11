@@ -27,20 +27,23 @@ configuration XD7LabApplication {
         [System.String] $Description,
 
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String] $DisplayName,
+        [System.String] $DisplayName = $Name,
         
         [Parameter()] [ValidateNotNull()]
         [System.Boolean] $Enabled = $true,
         
         [Parameter()] [ValidateNotNull()]
-        [System.Boolean] $Visible = $true
+        [System.Boolean] $Visible = $true,
+        
+        [Parameter()] [ValidateNotNull()]
+        [System.Management.Automation.PSCredential] $Credential
     )
     
     Import-DscResource -ModuleName XenDesktop7;
     
     $resourceId = '{0}_{1}' -f $DesktopGroupName.Replace(' ','_'), $Name;
     
-    if ($PSBoundParameters.ContainsKey('DisplayName')) {
+    if ($PSBoundParameters.ContainsKey('Credential')) {
         XD7DesktopGroupApplication $resourceId {
             Name = $Name;
             DesktopGroupName = $DesktopGroupName;
@@ -52,6 +55,7 @@ configuration XD7LabApplication {
             Enabled = $Enabled;
             Visible = $Visible;
             DisplayName = $DisplayName;
+            Credential = $Credential;
         }
     }
     else {
@@ -65,6 +69,7 @@ configuration XD7LabApplication {
             Description = $Description;
             Enabled = $Enabled;
             Visible = $Visible;
+            DisplayName = $DisplayName;
         }
     }
     

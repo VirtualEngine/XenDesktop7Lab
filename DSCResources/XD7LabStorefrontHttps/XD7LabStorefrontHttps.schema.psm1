@@ -51,13 +51,13 @@ configuration XD7LabStorefrontHttps {
         }
     }
 
-    XD7Feature XD7StoreFront {
+    XD7Feature 'XD7StoreFront' {
         Role = 'Storefront';
         SourcePath = $XenDesktopMediaPath;
         DependsOn = '[WindowsFeature]Web-Server';
     }
 
-    XD7Feature XD7Director {
+    XD7Feature 'XD7Director' {
         Role = 'Director';
         SourcePath = $XenDesktopMediaPath;
         DependsOn = '[WindowsFeature]Web-Server';
@@ -74,7 +74,7 @@ configuration XD7LabStorefrontHttps {
         }
     }
        
-    xPfxImport PfxCertificate {
+    xPfxImport 'PfxCertificate' {
         Thumbprint = $PfxCertificateThumbprint;
         Location = 'LocalMachine';
         Store = 'My';
@@ -82,7 +82,7 @@ configuration XD7LabStorefrontHttps {
         Credential = $PfxCertificateCredential;
     }
 
-    xWebSite DefaultWebSite {
+    xWebSite 'DefaultWebSite' {
         Name = 'Default Web Site';
         PhysicalPath = 'C:\inetpub\wwwroot';
         BindingInfo = @(

@@ -1,6 +1,5 @@
 @{
-    ModuleVersion = '2.1.1';
-    ## http://robertwesterlund.net/post/2014/03/12/creating-a-composite-dsc-configuration-with-parameters
+    ModuleVersion = '2.2.0';
     RootModule = 'XenDesktop7Lab.psm1';
     GUID = '1b0a8b41-8590-4e46-b828-01157fb7eec9';
     Author = 'Iain Brighton';

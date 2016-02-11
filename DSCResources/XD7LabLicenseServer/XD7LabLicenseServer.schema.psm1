@@ -4,45 +4,58 @@ configuration XD7LabLicenseServer {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
         
-        ## Active Directory domain account used to download the Citrix license file(s)
-        [Parameter()]
-        [System.Management.Automation.PSCredential] $Credential,
-
         ## Install Microsoft RDS license server role
-        [Parameter()]
+        [Parameter()] [ValidateNotNull()]
         [System.Boolean] $InstallRDSLicensingRole = $true,
         
         ## Path Citrix XenDesktop license file(s)
-        [Parameter()]
-        [System.String[]] $CitrixLicensePath
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String[]] $CitrixLicensePath,
+        
+        ## Active Directory domain account used to download the Citrix license file(s)
+        [Parameter()] [ValidateNotNull()]
+        [System.Management.Automation.PSCredential] $Credential
     )
 
     Import-DscResource -ModuleName XenDesktop7;
 
     if ($InstallRDSLicensingRole) {
-        WindowsFeature RDSLicensing {
+        WindowsFeature 'RDSLicensing' {
             Name = 'RDS-Licensing';
         }
         
-        WindowsFeature RDSLicensingUI {
+        WindowsFeature 'RDSLicensingUI' {
             Name = 'RDS-Licensing-UI';
         }
     }
         
-    XD7Feature XD7License {
+    XD7Feature 'XD7License' {
         Role = 'Licensing';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    foreach ($licenseFile in $CitrixLicensePath) {
-        $counter = 1;
-        File "XDLicenseFile_$counter" {
-            Type = 'File';
-            SourcePath = $licenseFile;
-            DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
-            Credential = $Credential;
+    if ($PSBoundParameters.ContainsKey('Credential')) {
+        foreach ($licenseFile in $CitrixLicensePath) {
+            $counter = 1;
+            File "XDLicenseFile_$counter" {
+                Type = 'File';
+                SourcePath = $licenseFile;
+                DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
+                Credential = $Credential;
+            }
+            $counter++;
         }
-        $counter++;
+    }
+    else {
+        foreach ($licenseFile in $CitrixLicensePath) {
+            $counter = 1;
+            File "XDLicenseFile_$counter" {
+                Type = 'File';
+                SourcePath = $licenseFile;
+                DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
+            }
+            $counter++;
+        }
     }
 
 } #end configuration XD7LabLicenseServer

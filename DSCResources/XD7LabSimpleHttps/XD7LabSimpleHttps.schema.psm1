@@ -4,10 +4,6 @@ configuration XD7LabSimpleHttps {
         [Parameter(Mandatory)]
         [System.String] $XenDesktopMediaPath,
         
-        ## Active Directory domain account used to install/configure the Citrix XenDesktop site
-        [Parameter(Mandatory)]
-        [System.Management.Automation.PSCredential] $Credential,
-        
         ## Citrix XenDesktop site name
         [Parameter(Mandatory)]
         [System.String] $SiteName,
@@ -60,12 +56,16 @@ configuration XD7LabSimpleHttps {
         [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice',
         
         ## Install Microsoft RDS license server role
-        [Parameter()]
+        [Parameter()] [ValidateNotNull()]
         [System.Boolean] $InstallRDSLicensingRole = $true,
         
         ## RDS license server - defaults to $ServerName
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String] $RDSLicenseServer = $ServerName
+        [System.String] $RDSLicenseServer = $ServerName,
+        
+        ## Active Directory domain account used to install/configure the Citrix XenDesktop site
+        [Parameter()] [ValidateNotNull()]
+        [System.Management.Automation.PSCredential] $Credential
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
@@ -83,19 +83,13 @@ configuration XD7LabSimpleHttps {
         $DatabaseServerName = '{0}.{1}' -f $DatabaseServerName, $DomainName;
     }
 
-    ## Ensure we have domain credentials
-    if ((-not $Credential.UserName.Contains('@')) -or (-not($Credential.UserName.Contains('\')))) {
-        $credentialUPN = '{0}@{1}' -f $Credential.UserName, $DomainName;
-        $Credential = New-Object System.Management.Automation.PSCredential($credentialUPN, $Credential.Password);
-    }
-    
-    XD7LabSessionHost XD7SessionHost {
+    XD7LabSessionHost 'XD7SessionHost' {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         ControllerAddress = $ServerName;
         RDSLicenseServer = $RDSLicenseServer;
     }
     
-    XD7LabStoreFrontHttps XD7StoreFrontHttps {
+    XD7LabStoreFrontHttps 'XD7StoreFrontHttps' {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         ControllerAddress = $ServerName;
         PfxCertificatePath = $PfxCertificatePath;
@@ -103,37 +97,70 @@ configuration XD7LabSimpleHttps {
         PfxCertificateCredential = $PfxCertificateCredential;
     }
     
-    XD7LabLicenseServer XD7LicenseServer {
+    XD7LabLicenseServer 'XD7LicenseServer' {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         InstallRDSLicensingRole = $InstallRDSLicensingRole;
         CitrixLicensePath = $CitrixLicensePath;
     }
 
-    XD7LabSite XD7Site {
-        XenDesktopMediaPath = $XenDesktopMediaPath;
-        Credential = $Credential;
-        SiteName = $SiteName;
-        DatabaseServer = $DatabaseServerName;
-        LicenseServer = $ServerName;
-        SiteAdministrators = 'Domain Admins';
-        DelegatedComputers = $credSSPDelegatedComputers;
-        LicenseModel = $LicenseModel;
+    if ($PSBoundParameters.ContainsKey('Credential')) {
+        ## Ensure we have domain credentials
+        if ((-not $Credential.UserName.Contains('@')) -or (-not($Credential.UserName.Contains('\')))) {
+            $credentialUPN = '{0}@{1}' -f $Credential.UserName, $DomainName;
+            $Credential = New-Object System.Management.Automation.PSCredential($credentialUPN, $Credential.Password);
+        }
+        
+        XD7LabSite 'XD7Site' {
+            XenDesktopMediaPath = $XenDesktopMediaPath;
+            Credential = $Credential;
+            SiteName = $SiteName;
+            DatabaseServer = $DatabaseServerName;
+            LicenseServer = $ServerName;
+            SiteAdministrators = 'Domain Admins';
+            DelegatedComputers = $credSSPDelegatedComputers;
+            LicenseModel = $LicenseModel;
+        }
+        
+        XD7LabMachineCatalog 'XD7Catalog' {
+            Name = $CatalogName;
+            Credential = $Credential;
+            ComputerName = $ServerName;
+            DependsOn = '[XD7LabSite]XD7Site';
+        }
+        
+        XD7LabDeliveryGroup 'XD7DeliveryGroup' {
+            Name = $DeliveryGroupName;
+            Credential = $Credential;
+            ComputerName = $ServerName;
+            Description = $DeliveryGroupDescription;
+            Users = $Users;
+            DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
+        }
     }
-    
-    XD7LabMachineCatalog XD7Catalog {
-        Name = $CatalogName;
-        Credential = $Credential;
-        ComputerName = $ServerName;
-        DependsOn = '[XD7LabSite]XD7Site';
-    }
-    
-    XD7LabDeliveryGroup XD7DeliveryGroup {
-        Name = $DeliveryGroupName;
-        Credential = $Credential;
-        ComputerName = $ServerName;
-        Description = $DeliveryGroupDescription;
-        Users = $Users;
-        DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
+    else {
+        XD7LabSite 'XD7Site' {
+            XenDesktopMediaPath = $XenDesktopMediaPath;
+            SiteName = $SiteName;
+            DatabaseServer = $DatabaseServerName;
+            LicenseServer = $ServerName;
+            SiteAdministrators = 'Domain Admins';
+            DelegatedComputers = $credSSPDelegatedComputers;
+            LicenseModel = $LicenseModel;
+        }
+        
+        XD7LabMachineCatalog 'XD7Catalog' {
+            Name = $CatalogName;
+            ComputerName = $ServerName;
+            DependsOn = '[XD7LabSite]XD7Site';
+        }
+        
+        XD7LabDeliveryGroup 'XD7DeliveryGroup' {
+            Name = $DeliveryGroupName;
+            ComputerName = $ServerName;
+            Description = $DeliveryGroupDescription;
+            Users = $Users;
+            DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
+        }
     }
 
 } #end configuration XD7LabSimple
