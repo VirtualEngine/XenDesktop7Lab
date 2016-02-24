@@ -34,7 +34,9 @@ configuration XD7LabSimpleHttps {
         
         ## Pfx certificate password
         [Parameter(Mandatory)]
-        [System.Management.Automation.PSCredential] $PfxCertificateCredential,
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $PfxCertificateCredential,
         
         ## Delivery group active directory user/groups
         [Parameter()] [ValidateNotNullOrEmpty()]
@@ -48,12 +50,13 @@ configuration XD7LabSimpleHttps {
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String] $DeliveryGroupName = 'Default Desktop',
 
-        ## Delivery group name
+        ## Delivery group description
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String] $DeliveryGroupDescription = 'Virtual Engine Lab',
+        [System.String] $DeliveryGroupDescription = 'Virtual Engine XenDesktop Lab Desktop KEYWORDS:Auto',
 
         ## Citrix XenDesktop licensing model
-        [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice',
+        [Parameter()] [ValidateSet('UserDevice','Concurrent')]
+        [System.String] $LicenseModel = 'UserDevice',
         
         ## Install Microsoft RDS license server role
         [Parameter()] [ValidateNotNull()]
@@ -65,7 +68,9 @@ configuration XD7LabSimpleHttps {
         
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!

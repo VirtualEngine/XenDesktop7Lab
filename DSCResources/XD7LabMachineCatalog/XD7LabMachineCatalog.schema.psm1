@@ -30,7 +30,9 @@ configuration XD7LabMachineCatalog {
         
         ## Active Directory domain account used to install/configure the Citrix XenDesktop machine catalog
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     Import-DscResource -ModuleName XenDesktop7;

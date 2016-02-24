@@ -36,7 +36,9 @@ configuration XD7LabApplication {
         [System.Boolean] $Visible = $true,
         
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
     
     Import-DscResource -ModuleName XenDesktop7;

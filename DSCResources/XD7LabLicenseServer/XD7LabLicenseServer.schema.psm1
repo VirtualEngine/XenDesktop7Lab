@@ -14,7 +14,9 @@ configuration XD7LabLicenseServer {
         
         ## Active Directory domain account used to download the Citrix license file(s)
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     Import-DscResource -ModuleName XenDesktop7;

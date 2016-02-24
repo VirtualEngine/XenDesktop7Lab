@@ -14,7 +14,9 @@ configuration XD7LabStorefrontHttps {
         
         ## Pfx certificate password
         [Parameter(Mandatory)]
-        [System.Management.Automation.PSCredential] $PfxCertificateCredential,
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $PfxCertificateCredential,
         
         ## XenDesktop controller address for Director connectivity
         [Parameter(Mandatory)]

@@ -38,10 +38,11 @@ configuration XD7LabSimple {
 
         ## Delivery group name
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String] $DeliveryGroupDescription = 'Virtual Engine Lab',
+        [System.String] $DeliveryGroupDescription = 'Virtual Engine XenDesktop Lab Desktop KEYWORDS:Auto',
 
         ## Citrix XenDesktop licensing model
-        [Parameter()] [ValidateSet('UserDevice','Concurrent')] [System.String] $LicenseModel = 'UserDevice',
+        [Parameter()] [ValidateSet('UserDevice','Concurrent')]
+        [System.String] $LicenseModel = 'UserDevice',
         
         ## Install Microsoft RDS license server role
         [Parameter()] [ValidateNotNull()]
@@ -49,7 +50,9 @@ configuration XD7LabSimple {
         
          ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!

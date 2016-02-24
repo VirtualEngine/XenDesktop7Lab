@@ -46,7 +46,9 @@ configuration XD7LabSite {
         
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
-        [System.Management.Automation.PSCredential] $Credential
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     Import-DscResource -ModuleName xCredSSP, XenDesktop7;
