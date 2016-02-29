@@ -55,13 +55,27 @@ configuration XD7LabDeliveryGroup {
             DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
         }
 
-        XD7EntitlementPolicy "DesktopGroup_$($resourceName)_Entitlement" {
-            DeliveryGroup = $Name;
-            EntitlementType = 'Desktop';
-            Credential = $Credential;
-            DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+        if ($DeliveryType -in 'DesktopsAndApps','DesktopsOnly') {
+            XD7EntitlementPolicy "DesktopGroup_$($resourceName)_DesktopEntitlement" {
+                DeliveryGroup = $Name;
+                Name = $Name;
+                Description = $Description;
+                EntitlementType = 'Desktop';
+                Credential = $Credential;
+                DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+            }
         }
-
+        
+        if ($DeliveryType -in 'DesktopsAndApps','AppsOnly') {
+            XD7EntitlementPolicy "DesktopGroup_$($resourceName)_ApplicationEntitlement" {
+                DeliveryGroup = $Name;
+                Name = $Name;
+                EntitlementType = 'Application';
+                Credential = $Credential;
+                DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+            }
+        }
+        
         XD7AccessPolicy "DesktopGroup_$($resourceName)_Direct" {
             DeliveryGroup = $Name;
             AccessType = 'Direct';
@@ -93,10 +107,23 @@ configuration XD7LabDeliveryGroup {
             DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
         }
 
-        XD7EntitlementPolicy "DesktopGroup_$($resourceName)_Entitlement" {
-            DeliveryGroup = $Name;
-            EntitlementType = 'Desktop';
-            DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+        if ($DeliveryType -in 'DesktopsAndApps','DesktopsOnly') {
+            XD7EntitlementPolicy "DesktopGroup_$($resourceName)_DesktopEntitlement" {
+                DeliveryGroup = $Name;
+                Name = $Name;
+                EntitlementType = 'Desktop';
+                DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+            }
+        }
+        
+        if ($DeliveryType -in 'DesktopsAndApps','AppsOnly') {
+            XD7EntitlementPolicy "DesktopGroup_$($resourceName)_ApplicationEntitlement" {
+                DeliveryGroup = $Name;
+                Name = $Name;
+                EntitlementType = 'Application';
+                Credential = $Credential;
+                DependsOn = "[XD7DesktopGroup]DesktopGroup_$resourceName";
+            }
         }
 
         XD7AccessPolicy "DesktopGroup_$($resourceName)_Direct" {

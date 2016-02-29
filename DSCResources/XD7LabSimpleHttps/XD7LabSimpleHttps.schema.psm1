@@ -85,7 +85,20 @@ configuration XD7LabSimpleHttps {
     }
 
     if (-not $DatabaseServerName.Contains('.')) {
+        ## Create database server FQDN
         $DatabaseServerName = '{0}.{1}' -f $DatabaseServerName, $DomainName;
+    }
+    
+    $domainUsers = @();
+    foreach ($user in $Users) {
+        if (($user.Contains('\')) -or ($user.Contains('@'))) {
+            ## User group is already in domain format
+            $domainUsers += $user;
+        }
+        else {
+            ## Convert user/group to NetBIOSDomainName\Username
+            $domainUsers += '{0}\{1}' -f $DomainName.Split('.')[0], $user;
+        }
     }
 
     XD7LabSessionHost 'XD7SessionHost' {
@@ -138,7 +151,7 @@ configuration XD7LabSimpleHttps {
             Credential = $Credential;
             ComputerName = $ServerName;
             Description = $DeliveryGroupDescription;
-            Users = $Users;
+            Users = $domainUsers;
             DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
         }
     }
@@ -163,7 +176,7 @@ configuration XD7LabSimpleHttps {
             Name = $DeliveryGroupName;
             ComputerName = $ServerName;
             Description = $DeliveryGroupDescription;
-            Users = $Users;
+            Users = $domainUsers;
             DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
         }
     }

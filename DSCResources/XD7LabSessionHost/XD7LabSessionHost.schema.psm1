@@ -14,7 +14,13 @@ configuration XD7LabSessionHost {
         
         ## Users/groups to add to the local Remote Desktop Users group
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.String[]] $RemoteDesktopUsers = 'S-1-5-11' # Authenticated Users
+        [System.String[]] $RemoteDesktopUsers,
+
+        ## Active Directory domain account used to communicate with AD for Remote Desktop Users
+        [Parameter()] [ValidateNotNull()]
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.CredentialAttribute()]
+        $Credential
     )
 
     Import-DscResource -ModuleName XenDesktop7;
@@ -39,11 +45,23 @@ configuration XD7LabSessionHost {
         }
     }
     
-    Group 'RemoteDesktopUsers' {
-        GroupName = 'Remote Desktop Users';
-        MembersToInclude = $RemoteDesktopUsers;
-        Ensure = 'Present';
-    }
+    if ($PSBoundParameters.ContainsKey('RemoteDesktopUsers')) {
+        if ($PSBoundParameters.ContainsKey('Credential')) {
+            Group 'RemoteDesktopUsers' {
+                GroupName = 'Remote Desktop Users';
+                MembersToInclude = $RemoteDesktopUsers;
+                Ensure = 'Present';
+                Credential = $Credential;
+            }
+        }
+        else {
+                Group 'RemoteDesktopUsers' {
+                GroupName = 'Remote Desktop Users';
+                MembersToInclude = $RemoteDesktopUsers;
+                Ensure = 'Present';
+            }
+        } #end if Credential
+    } #end if Remote Desktop Users
 
     Registry 'RDSLicenseServer' {
         Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\TermService\Parameters\LicenseServers';
