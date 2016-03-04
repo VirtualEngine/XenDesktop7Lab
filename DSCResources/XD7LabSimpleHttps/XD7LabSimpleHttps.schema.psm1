@@ -38,6 +38,14 @@ configuration XD7LabSimpleHttps {
         [System.Management.Automation.CredentialAttribute()]
         $PfxCertificateCredential,
         
+        ## Custom StoreFront base url
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String] $StoreFrontBaseUrl,
+        
+        ## IIS root redirection relative/absolute url
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String] $StoreFrontRedirectUrl,
+        
         ## Delivery group active directory user/groups
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String[]] $Users = 'Domain Users',
@@ -74,7 +82,8 @@ configuration XD7LabSimpleHttps {
     )
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
-    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefrontHttps, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog, XD7LabDeliveryGroup;
+    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefrontHttps, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog;
+    Import-DscResource -Name XD7LabDeliveryGroup, XD7LabStorefrontUrl, XD7LabStorefrontRedirect;
 
     ## Create ServerName and ServerName.DomainName names
     if ($ServerName.Contains('.')) {
@@ -180,5 +189,22 @@ configuration XD7LabSimpleHttps {
             DependsOn = '[XD7LabMachineCatalog]XD7Catalog';
         }
     }
+    
+    if ($PSBoundParameters.ContainsKey('StorefrontBaseUrl')) {
+        
+        XD7LabStoreFrontUrl 'lab_simple_storefront' {
+            BaseUrl = $StoreFrontBaseUrl;
+        }
+        
+    } #end if Storefront Base Url
+    
+    if ($PSBoundParameters.ContainsKey('StorefrontRedirectUrl')) {
+        
+        XD7LabStoreFrontRedirect 'lab_simple_storefront_redirect' {
+            RedirectUrl = $StoreFrontRedirectUrl;
+        }
+        
+    } #end if Storefront Redirect Url
+
 
 } #end configuration XD7LabSimple
