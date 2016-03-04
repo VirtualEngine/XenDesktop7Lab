@@ -1,7 +1,7 @@
 configuration XD7LabStorefrontRedirect {
     param (
         [Parameter(Mandatory)]
-        [System.String] $RedirectUrl;
+        [System.String] $RedirectUrl
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration;
@@ -15,4 +15,4 @@ configuration XD7LabStorefrontRedirect {
         Ensure = 'Present';
     }
 
-} #end configuration XD7LabStorefrontUrl
+} #end configuration XD7LabStorefrontRedirect

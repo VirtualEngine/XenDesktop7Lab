@@ -6,7 +6,7 @@ configuration XD7LabStorefrontUrl {
 
     Import-DscResource -ModuleName XenDesktop7;
     
-    if ((-not $BaseUrl.StartsWith('http://')) -or (-not $BaseUrl.StartsWith('https://'))) {
+    if (-not ($BaseUrl.StartsWith('http://') -or $BaseUrl.StartsWith('https://'))) {
         $BaseUrl = 'http://{0}' -f $BaseUrl;
     }
     
