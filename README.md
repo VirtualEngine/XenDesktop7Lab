@@ -1,11 +1,13 @@
 The XenDesktop7Lab composite DSC resources mask some of the underlying implementation/complexities
 of the individual [XenDesktop7](https://github.com/VirtualEngine/XenDesktop7) DSC resources.
-The composite XenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.0, v7.1, v7.5, v7.6
-or v7.7 via PowerShell Desired State Configuration (DSC).
+The composite XenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.0, v7.1, v7.5, v7.6,
+v7.7 or v7.8 via PowerShell Desired State Configuration (DSC).
 
 This module contains the following DSC resources:
 
 ###Included Resources
+* XD7LabAdministrator
+ * Adds one or more XenDesktop Administrators.
 * XD7LabApplication
  * Adds a local or published application to a desktop delivery group.
 * XD7LabController
