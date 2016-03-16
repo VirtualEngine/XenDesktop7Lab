@@ -74,6 +74,10 @@ configuration XD7LabSimpleHttps {
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String] $RDSLicenseServer = $ServerName,
         
+        ## Citrix XenDesktop full administrators
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String[]] $SiteAdministrator,
+        
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
@@ -143,7 +147,7 @@ configuration XD7LabSimpleHttps {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServerName;
             LicenseServer = $ServerName;
-            SiteAdministrators = 'Domain Admins';
+            SiteAdministrators = $SiteAdministrator;
             DelegatedComputers = $credSSPDelegatedComputers;
             LicenseModel = $LicenseModel;
         }

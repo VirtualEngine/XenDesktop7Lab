@@ -56,6 +56,10 @@ configuration XD7LabSimple {
         [Parameter()] [ValidateNotNull()]
         [System.Boolean] $InstallRDSLicensingRole = $true,
         
+        ## Citrix XenDesktop full administrators
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.String[]] $SiteAdministrator,
+        
          ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
@@ -122,7 +126,7 @@ configuration XD7LabSimple {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServerName;
             LicenseServer = $ServerName;
-            SiteAdministrators = 'Domain Admins';
+            SiteAdministrators = $SiteAdministrator;
             DelegatedComputers = $credSSPDelegatedComputers;
             LicenseModel = $LicenseModel;
         }
