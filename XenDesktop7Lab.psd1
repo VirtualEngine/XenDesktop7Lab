@@ -6,4 +6,15 @@
     CompanyName = 'Virtual Engine';
     Copyright = '(c) 2016 Virtual Engine Limited. All rights reserved.';
     Description = 'Citrix XenDesktop 7 Lab DSC Composite Resources.';
+    PowerShellVersion = '4.0';
+    CLRVersion = '4.0';
+    PrivateData = @{
+        PSData = @{  # Private data to pass to the module specified in RootModule/ModuleToProcess
+            Tags = @('VirtualEngine','Citrix','XenDesktop','Composite','DSC');
+            LicenseUri = 'https://github.com/VirtualEngine/XenDesktop7Lab/blob/master/LICENSE';
+            ProjectUri = 'https://github.com/VirtualEngine/XenDesktop7Lab';
+            IconUri = 'https://raw.githubusercontent.com/VirtualEngine/XenDesktop7Lab/master/CitrixReceiver.png';
+        } # End of PSData hashtable
+    } # End of PrivateData hashtable
+
 }
