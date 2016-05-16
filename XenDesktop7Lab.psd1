@@ -9,13 +9,9 @@
     PowerShellVersion = '4.0';
     CLRVersion = '4.0';
     RequiredModules = @('XenDesktop7', 'xCredSSP');
-    DscResourcesToExport = @('XD7LabAdministrator', 'XD7LabApplication', 'XD7LabController', 'XD7LabDeliveryGroup',
-                                'XD7LabLicenseServer', 'XD7LabMachineCatalog', 'XD7LabSessionHost', 'XD7LabSimple',
-                                'XD7LabSimpleHttps', 'XD7LabSite', 'XD7LabStorefront', 'XD7LabStorefrontHttps',
-                                'XD7LabStorefrontRedirect', 'XD7LabStorefrontUrl');
     PrivateData = @{
         PSData = @{  # Private data to pass to the module specified in RootModule/ModuleToProcess
-            Tags = @('VirtualEngine','Citrix','XenDesktop','Composite','DSC');
+            Tags = @('VirtualEngine','Citrix','XenDesktop','XenApp','Composite','DSC');
             LicenseUri = 'https://github.com/VirtualEngine/XenDesktop7Lab/blob/master/LICENSE';
             ProjectUri = 'https://github.com/VirtualEngine/XenDesktop7Lab';
             IconUri = 'https://raw.githubusercontent.com/VirtualEngine/XenDesktop7Lab/master/CitrixReceiver.png';

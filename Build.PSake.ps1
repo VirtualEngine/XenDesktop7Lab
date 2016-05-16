@@ -13,7 +13,7 @@ Properties {
 
 Task Default -Depends Build;
 
-Task Build -Depends Init, Clean, Test, Deploy;
+Task Build -Depends Init, Clean, Deploy;
 
 Task Init {
 
