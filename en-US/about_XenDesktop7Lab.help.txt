@@ -9,14 +9,20 @@ LONG DESCRIPTION
     The XenDesktop7lab resources can be used to deploy Citrix XenDesktop  v7.0, v7.1, v7.5, v7.6 or v7.7 via
     PowerShell Desired State Configuration (DSC). This module contains the following DSC resources:
 
+    * XD7LabAdministrator - Adds and assigns an administrative role.
+    * XD7LabApplication - Publishes an application.    
     * XD7LabController - Adds a controller to an existing XenDesktop site.
     * XD7LabDeliveryGroup - Creates a desktop group, adds machine(s) and creates access and entitlement policies.
     * XD7LabLicenseServer - Installs RDS and Citrix licensing server and imports license file.
     * XD7LabMachineCatalog - Creates a machine catalog and adds machine(s).
     * XD7LabSessionHost - Installs RDSH, VDA and assigns RDS license server.
+    * XD7LabSimple - Creates a simple, single host XenDesktop 7.x deployment.
+    * XD7LabSimpleHttps - Creates a simple, single host XenDesktop 7.x deployment using HTTPS for Storefront.  
     * XD7LabSite - Configures CredSSP, installs the controller role, creates the XenDesktop site and assigns administrators.
     * XD7LabStorefront - Installs IIS required roles, Storefront and Director.
     * XD7LabStorefrontHttps - Installs IIS required roles, certificate and configures Storefront and Director to use HTTPS.
+    * XD7LabStorefrontRedirect - Adds a default website redirect for Storefront.
+    * XD7LabStorefrontUrl - Configures the Citrix Storefront base URL, e.g. to use HTTPS.
 
     The XenDesktop7Lab composite DSC resources have dependencies on the following DSC resources:
     
