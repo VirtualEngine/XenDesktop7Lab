@@ -89,7 +89,15 @@ configuration XD7LabSimpleHttps {
 
         ## Enable or disable auto-launching of the default desktop
         [Parameter()] [ValidateNotNullOrEmpty()]
-        [System.Boolean] $AutoLaunchDesktop,
+        [System.Boolean] $AutoLaunchDesktop = $true,
+
+        ## Enable the Citrix Receiver plugin detection
+        [Parameter()] [ValidateNotNullOrEmpty()]
+        [System.Boolean] $StorefrontPluginAssistant = $true,
+
+        ## Citrix Storefront session timeout (mins)
+        [Parameter()] [ValidateNotNull()]
+        [System.UInt16] $StorefrontSessionTimeout = 20,
 
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
@@ -238,11 +246,15 @@ configuration XD7LabSimpleHttps {
         }
     } #end if StoreFrontAuthenticationMethods
 
-    if ($PSBoundParameters.ContainsKey('AutoLaunchDesktop')) {
+    if (($PSBoundParameters.ContainsKey('AutoLaunchDesktop')) -or
+        ($PSBoundParameters.ContainsKey('StorefrontPluginAssistant')) -or
+        ($PSBoundParameters.ContainsKey('StorefrontSessionTimeout'))) {
 
         XD7LabStorefrontWebConfig 'XD7StorefrontWebConfig' {
             Path = 'C:\inetpub\wwwroot\Citrix\StoreWeb';
             AutoLaunchDesktop = $AutoLaunchDesktop;
+            PluginAssistant = $StorefrontPluginAssistant;
+            SessionTimeout = $StorefrontSessionTimeout;
             ## Installing the site, creates the Storefront Store
             DependsOn = '[XD7LabSite]XD7Site';
         }
