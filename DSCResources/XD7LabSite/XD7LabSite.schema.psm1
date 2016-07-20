@@ -44,6 +44,10 @@ configuration XD7LabSite {
         [Parameter()] [ValidateSet('UserDevice','Concurrent')]
         [System.String] $LicenseModel = 'UserDevice',
 
+        ## The XML Broker Service trust settings
+        [Parameter()] [ValidateNotNull()]
+        [System.Boolean] $TrustRequestsSentToXmlServicePort,
+
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
@@ -183,5 +187,14 @@ configuration XD7LabSite {
             Members =  $SiteAdministrators;
         }
     }
+
+    if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {
+
+        XD7SiteConfig 'TrustRequestsSentToXmlServicePort' {
+            IsSingleInstance = 'Yes';
+            TrustRequestsSentToTheXmlServicePort = $TrustRequestsSentToXmlServicePort;
+            DependsOn = '[XD7Site]XD7Site';
+        }
+    } #end if TrustRequestsSentToXmlServicePort
 
 } #end configuration XD7LabSite
