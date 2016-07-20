@@ -137,10 +137,10 @@ configuration XD7LabStorefrontWebConfig {
         if ($PSBoundParameters.ContainsKey($settingsKey)) {
 
             $xpath = $settings[$settingsKey].XPath;
-            $attribute = $settings[$settingsKey].Attribute;
-            $value = $PSBoundParameters[$settingsKey].ToString().ToLower();
+            $attributeName = $settings[$settingsKey].Attribute;
+            $attributeValue = $PSBoundParameters[$settingsKey].ToString().ToLower();
 
-            Script $attribute {
+            Script $settingsKey {
 
                 GetScript = {
 
@@ -148,7 +148,7 @@ configuration XD7LabStorefrontWebConfig {
                     $xml.Load($using:Path);
                     $node = $xml.SelectSingleNode($using:xpath);
                     return @{
-                        Result = $node.$using:attribute;
+                        Result = $node.$using:attributeName;
                     }
 
                 }
@@ -158,7 +158,7 @@ configuration XD7LabStorefrontWebConfig {
                     $xml = New-Object -TypeName 'System.Xml.XmlDocument';
                     $xml.Load($using:Path);
                     $node = $xml.SelectSingleNode($using:xpath);
-                    if ($node.$using:attribute -ne $using:value) {
+                    if ($node.$using:attributeName -ne $using:attributeValue) {
                         return $false;
                     }
                     else {
@@ -172,7 +172,7 @@ configuration XD7LabStorefrontWebConfig {
                     $xml = New-Object -TypeName 'System.Xml.XmlDocument';
                     $xml.Load($using:Path);
                     $node = $xml.SelectSingleNode($using:xpath);
-                    $node.$using:attribute = $using:value;
+                    $node.$using:attributeName = $using:attributeValue;
                     $xml.Save($using:Path);
 
                 }

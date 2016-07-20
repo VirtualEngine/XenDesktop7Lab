@@ -3,47 +3,47 @@ configuration XD7LabSite {
         ## Citrix XenDesktop installation source root
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
-        
+
         ## Citrix XenDesktop site name
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String] $SiteName,
-        
+
         ## Microsoft SQL Server FQDN
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String] $DatabaseServer,
-        
+
         ## Citrix license server FQDN
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String] $LicenseServer,
-        
+
         ## List of Active Directory site administrators
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String[]] $SiteAdministrators,
-        
+
         ## List of all FQDNs and NetBIOS of XenDesktop site controller names for credential delegation
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
         [System.String[]] $DelegatedComputers,
-        
+
         ## Citrix XenDesktop Site database name
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String] $SiteDatabaseName = "$($SiteName)Site",
-        
+
         ## Citrix XenDesktop Logging database name
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String] $LoggingDatabaseName = "$($SiteName)Logging",
-        
+
         ## Citrix XenDesktop Monitor database name
         [Parameter()] [ValidateNotNullOrEmpty()]
         [System.String] $MonitorDatabaseName = "$($SiteName)Monitor",
-        
+
         ## Citrix XenDesktop licensed edition
         [Parameter()] [ValidateSet('PLT','ENT','APP')]
         [System.String] $LicenseEdition = 'PLT',
-        
+
         ## Citrix XenDesktop licensing model
         [Parameter()] [ValidateSet('UserDevice','Concurrent')]
         [System.String] $LicenseModel = 'UserDevice',
-        
+
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()] [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
@@ -56,12 +56,12 @@ configuration XD7LabSite {
     xCredSSP 'CredSSPServer' {
         Role = 'Server';
     }
-    
+
     xCredSSP 'CredSSPClient' {
         Role = 'Client';
         DelegateComputers = $DelegatedComputers;
     }
-        
+
     XD7Feature 'XD7Controller' {
         Role = 'Controller';
         SourcePath = $XenDesktopMediaPath;
@@ -71,7 +71,7 @@ configuration XD7LabSite {
         Role = 'Studio';
         SourcePath = $XenDesktopMediaPath;
     }
-    
+
     if ($PSBoundParameters.ContainsKey('Credential')) {
         XD7Database 'XD7SiteDatabase' {
             SiteName = $SiteName;
@@ -90,7 +90,7 @@ configuration XD7LabSite {
             DataStore = 'Logging';
             DependsOn = '[XD7Feature]XD7Controller';
         }
-        
+
         XD7Database 'XD7SiteMonitorDatabase' {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServer;
@@ -99,7 +99,7 @@ configuration XD7LabSite {
             DataStore = 'Monitor';
             DependsOn = '[XD7Feature]XD7Controller';
         }
-            
+
         XD7Site 'XD7Site' {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServer;
@@ -147,7 +147,7 @@ configuration XD7LabSite {
             DataStore = 'Logging';
             DependsOn = '[XD7Feature]XD7Controller';
         }
-        
+
         XD7Database 'XD7SiteMonitorDatabase' {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServer;
@@ -155,7 +155,7 @@ configuration XD7LabSite {
             DataStore = 'Monitor';
             DependsOn = '[XD7Feature]XD7Controller';
         }
-            
+
         XD7Site 'XD7Site' {
             SiteName = $SiteName;
             DatabaseServer = $DatabaseServer;
