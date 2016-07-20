@@ -134,6 +134,17 @@ configuration XD7LabSite {
             Members =  $SiteAdministrators;
             Credential = $Credential;
         }
+
+        if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {
+
+            XD7SiteConfig 'TrustRequestsSentToXmlServicePort' {
+                IsSingleInstance = 'Yes';
+                TrustRequestsSentToTheXmlServicePort = $TrustRequestsSentToXmlServicePort;
+                Credential = $Credential;
+                DependsOn = '[XD7Site]XD7Site';
+            }
+        } #end if TrustRequestsSentToXmlServicePort
+
     }
     else {
         XD7Database 'XD7SiteDatabase' {
@@ -186,15 +197,15 @@ configuration XD7LabSite {
             Name = 'Full Administrator';
             Members =  $SiteAdministrators;
         }
+
+        if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {
+
+            XD7SiteConfig 'TrustRequestsSentToXmlServicePort' {
+                IsSingleInstance = 'Yes';
+                TrustRequestsSentToTheXmlServicePort = $TrustRequestsSentToXmlServicePort;
+                DependsOn = '[XD7Site]XD7Site';
+            }
+        } #end if TrustRequestsSentToXmlServicePort
     }
-
-    if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {
-
-        XD7SiteConfig 'TrustRequestsSentToXmlServicePort' {
-            IsSingleInstance = 'Yes';
-            TrustRequestsSentToTheXmlServicePort = $TrustRequestsSentToXmlServicePort;
-            DependsOn = '[XD7Site]XD7Site';
-        }
-    } #end if TrustRequestsSentToXmlServicePort
 
 } #end configuration XD7LabSite
