@@ -113,6 +113,11 @@ configuration XD7LabSimpleHttps {
         [ValidateNotNull()]
         [System.UInt16] $StorefrontSessionTimeout = 20,
 
+        ## Enable the Citrix Storefront Unified Experience
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.Boolean] $StorefrontUnifiedExperience,
+
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
         [Parameter()]
         [ValidateNotNull()]
@@ -244,22 +249,10 @@ configuration XD7LabSimpleHttps {
             DependsOn = '[XD7LabSite]XD7Site';
         }
 
-        if ($PSBoundParameters.ContainsKey('StoreFrontRedirectUrl')) {
-
-            ## Use the supplied Wev Receiver
-            XD7StoreFrontReceiverAuthenticationMethod 'StorefrontAuthenticationMethod' {
-                VirtualPath = $StoreFrontRedirectUrl;
-                AuthenticationMethod = $StoreFrontAuthenticationMethods;
-                DependsOn = '[XD7StoreFrontAuthenticationMethod]StoreAuthenticationMethod';
-            }
-        }
-        else {
-
-            XD7StoreFrontReceiverAuthenticationMethod 'StorefrontAuthenticationMethod' {
-                VirtualPath = '/Citrix/StoreWeb';
-                AuthenticationMethod = $StoreFrontAuthenticationMethods;
-                DependsOn = '[XD7StoreFrontAuthenticationMethod]StoreAuthenticationMethod';
-            }
+        XD7StoreFrontReceiverAuthenticationMethod 'StorefrontAuthenticationMethod' {
+            VirtualPath = '/Citrix/StoreWeb';
+            AuthenticationMethod = $StoreFrontAuthenticationMethods;
+            DependsOn = '[XD7StoreFrontAuthenticationMethod]StoreAuthenticationMethod';
         }
     } #end if StoreFrontAuthenticationMethods
 
@@ -290,5 +283,14 @@ configuration XD7LabSimpleHttps {
             RedirectUrl = $StoreFrontRedirectUrl;
         }
     } #end if Storefront Redirect Url
+
+    if ($PSBoundParameters.ContainsKey('StorefrontUnifiedExperience')) {
+
+        XD7StoreFrontUnifiedExperience 'StoreFrontUnifiedExperience' {
+            VirtualPath = '/Citrix/Store';
+            WebReceiverVirtualPath = '/Citrix/StoreWeb';
+            Ensure = if (StorefrontUnifiedExperience -eq $true) { 'Present' } else { 'Absent' }
+        }
+    } #end if Storefront Unified Experience
 
 } #end configuration XD7LabSimple
