@@ -1,19 +1,23 @@
 configuration XD7LabLicenseServer {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
-        
+
         ## Install Microsoft RDS license server role
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Boolean] $InstallRDSLicensingRole = $true,
-        
+
         ## Path Citrix XenDesktop license file(s)
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String[]] $CitrixLicensePath,
-        
+
         ## Active Directory domain account used to download the Citrix license file(s)
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $Credential
@@ -22,21 +26,23 @@ configuration XD7LabLicenseServer {
     Import-DscResource -ModuleName XenDesktop7;
 
     if ($InstallRDSLicensingRole) {
+
         WindowsFeature 'RDSLicensing' {
             Name = 'RDS-Licensing';
         }
-        
+
         WindowsFeature 'RDSLicensingUI' {
             Name = 'RDS-Licensing-UI';
         }
     }
-        
+
     XD7Feature 'XD7License' {
         Role = 'Licensing';
         SourcePath = $XenDesktopMediaPath;
     }
 
     if ($PSBoundParameters.ContainsKey('Credential')) {
+
         foreach ($licenseFile in $CitrixLicensePath) {
             $counter = 1;
             File "XDLicenseFile_$counter" {
@@ -49,7 +55,9 @@ configuration XD7LabLicenseServer {
         }
     }
     else {
+
         foreach ($licenseFile in $CitrixLicensePath) {
+
             $counter = 1;
             File "XDLicenseFile_$counter" {
                 Type = 'File';

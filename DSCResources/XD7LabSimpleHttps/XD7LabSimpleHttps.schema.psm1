@@ -39,11 +39,13 @@ configuration XD7LabSimpleHttps {
         $PfxCertificateCredential,
 
         ## Custom StoreFront base url
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $StoreFrontBaseUrl,
 
         ## IIS root redirection relative/absolute url
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $StoreFrontRedirectUrl,
 
         ## Storefront explicit authentication methods available
@@ -52,55 +54,68 @@ configuration XD7LabSimpleHttps {
         [System.String[]] $StoreFrontAuthenticationMethods,
 
         ## Delivery group active directory user/groups
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String[]] $Users = 'Domain Users',
 
         ## Machine catalog name
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $CatalogName = 'Manual',
 
         ## Delivery group name
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $DeliveryGroupName = 'Default Desktop',
 
         ## Delivery group description
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $DeliveryGroupDescription = 'Virtual Engine XenDesktop Lab Desktop KEYWORDS:Auto',
 
         ## Citrix XenDesktop licensing model
-        [Parameter()] [ValidateSet('UserDevice','Concurrent')]
+        [Parameter()]
+        [ValidateSet('UserDevice','Concurrent')]
         [System.String] $LicenseModel = 'UserDevice',
 
         ## Install Microsoft RDS license server role
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Boolean] $InstallRDSLicensingRole = $true,
 
         ## RDS license server - defaults to $ServerName
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $RDSLicenseServer = $ServerName,
 
         ## Citrix XenDesktop full administrators
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String[]] $SiteAdministrator,
 
         ## The XML Broker Service trust settings
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Boolean] $TrustRequestsSentToXmlServicePort,
 
         ## Enable or disable auto-launching of the default desktop
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.Boolean] $AutoLaunchDesktop = $true,
 
         ## Enable the Citrix Receiver plugin detection
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.Boolean] $StorefrontPluginAssistant = $true,
 
         ## Citrix Storefront session timeout (mins)
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.UInt16] $StorefrontSessionTimeout = 20,
 
         ## Active Directory domain account used to install/configure the Citrix XenDesktop site
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $Credential
@@ -126,6 +141,7 @@ configuration XD7LabSimpleHttps {
 
     $domainUsers = @();
     foreach ($user in $Users) {
+
         if (($user.Contains('\')) -or ($user.Contains('@'))) {
             ## User group is already in domain format
             $domainUsers += $user;
@@ -192,6 +208,7 @@ configuration XD7LabSimpleHttps {
         }
     }
     else {
+
         XD7LabSite 'XD7Site' {
             XenDesktopMediaPath = $XenDesktopMediaPath;
             SiteName = $SiteName;
@@ -251,7 +268,7 @@ configuration XD7LabSimpleHttps {
         ($PSBoundParameters.ContainsKey('StorefrontSessionTimeout'))) {
 
         XD7LabStorefrontWebConfig 'XD7StorefrontWebConfig' {
-            Path = 'C:\inetpub\wwwroot\Citrix\StoreWeb';
+            Path = 'C:\inetpub\wwwroot\Citrix\StoreWeb\web.config';
             AutoLaunchDesktop = $AutoLaunchDesktop;
             PluginAssistant = $StorefrontPluginAssistant;
             SessionTimeout = $StorefrontSessionTimeout;

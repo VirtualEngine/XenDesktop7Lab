@@ -1,23 +1,24 @@
 configuration XD7LabStorefrontHttps {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
-        
+
         ## Personal information exchange (Pfx) ertificate file path
         [Parameter(Mandatory)]
         [System.String] $PfxCertificatePath,
-        
+
         ## Pfx certificate thumbprint
         [Parameter(Mandatory)]
         [System.String] $PfxCertificateThumbprint,
-        
+
         ## Pfx certificate password
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $PfxCertificateCredential,
-        
+
         ## XenDesktop controller address for Director connectivity
         [Parameter(Mandatory)]
         [System.String[]] $ControllerAddress
@@ -47,6 +48,7 @@ configuration XD7LabStorefrontHttps {
         'Web-Scripting-Tools'
     )
     foreach ($feature in $features) {
+
         WindowsFeature $feature {
             Name = $feature;
             Ensure = 'Present';
@@ -66,6 +68,7 @@ configuration XD7LabStorefrontHttps {
     }
 
     foreach ($controller in $ControllerAddress) {
+
         xWebConfigKeyValue "ServiceAutoDiscovery_$controller" {
             ConfigSection = 'AppSettings';
             Key = 'Service.AutoDiscoveryAddresses';
@@ -75,7 +78,7 @@ configuration XD7LabStorefrontHttps {
             DependsOn = '[WindowsFeature]Web-Server','[XD7Feature]XD7Director';
         }
     }
-       
+
     xPfxImport 'PfxCertificate' {
         Thumbprint = $PfxCertificateThumbprint;
         Location = 'LocalMachine';
