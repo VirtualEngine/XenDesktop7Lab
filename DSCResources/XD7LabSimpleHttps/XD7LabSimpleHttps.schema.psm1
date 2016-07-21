@@ -289,7 +289,7 @@ configuration XD7LabSimpleHttps {
         XD7StoreFrontUnifiedExperience 'StoreFrontUnifiedExperience' {
             VirtualPath = '/Citrix/Store';
             WebReceiverVirtualPath = '/Citrix/StoreWeb';
-            Ensure = if (StorefrontUnifiedExperience -eq $true) { 'Present' } else { 'Absent' }
+            Ensure = if ($StorefrontUnifiedExperience -eq $true) { 'Present' } else { 'Absent' }
         }
     } #end if Storefront Unified Experience
 
