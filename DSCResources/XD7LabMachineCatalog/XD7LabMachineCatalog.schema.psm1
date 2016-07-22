@@ -46,7 +46,7 @@ configuration XD7LabMachineCatalog {
 
     ## Machine catalog members should not be FQDNs
     $catalogMembers = @();
-    foreach ($member in $Members) {
+    foreach ($member in $ComputerName) {
 
         if ($member.Contains('.')) {
             $catalogMembers += $member.Split('.')[0];
@@ -55,7 +55,6 @@ configuration XD7LabMachineCatalog {
             $catalogMembers += $member;
         }
     } #end foreach catalog member
-
 
     if ($PSBoundParameters.ContainsKey('Credential')) {
 
