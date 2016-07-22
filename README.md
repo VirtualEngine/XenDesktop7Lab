@@ -33,7 +33,9 @@ This module contains the following DSC resources:
 * XD7LabStorefrontRedirect
  * Configures an default 'index.htm' IIS document with a Javascript redirect on the default IIS website.
 * XD7LabStorefrontUrl
- * Configures a Storefront 2.x or 3.x base URL. 
+ * CoAnfigures a StorefrAont 2.x or 3.x base URL.
+* XD7LabStorefrontWebConfig
+ * Configures a Storefront 2.x or 3.x web.config file settings.
 
 ###Requirements
 There are __dependencies__ on the following DSC resources:

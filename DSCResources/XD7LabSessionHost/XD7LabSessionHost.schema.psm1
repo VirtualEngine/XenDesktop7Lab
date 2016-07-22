@@ -1,23 +1,28 @@
 configuration XD7LabSessionHost {
     param (
         ## Citrix XenDesktop installation source root
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
-        
+
         ## Citrix XenDesktop delivery controller address(es)
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [System.String[]] $ControllerAddress,
-        
+
         ## RDS license server
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [System.String] $RDSLicenseServer,
-        
+
         ## Users/groups to add to the local Remote Desktop Users group
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String[]] $RemoteDesktopUsers,
 
         ## Active Directory domain account used to communicate with AD for Remote Desktop Users
-        [Parameter()] [ValidateNotNull()]
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $Credential
@@ -26,12 +31,13 @@ configuration XD7LabSessionHost {
     Import-DscResource -ModuleName XenDesktop7;
 
     foreach ($feature in @('RDS-RD-Server', 'Remote-Assistance', 'Desktop-Experience')) {
+
         WindowsFeature $feature {
             Name = $feature;
             Ensure = 'Present';
         }
     }
-        
+
     XD7VDAFeature 'XD7SessionVDA' {
         Role = 'SessionVDA';
         SourcePath = $XenDesktopMediaPath;
@@ -39,14 +45,17 @@ configuration XD7LabSessionHost {
     }
 
     foreach ($controller in $ControllerAddress) {
+
         XD7VDAController "XD7VDA_$controller" {
             Name = $controller;
             DependsOn = '[XD7VDAFeature]XD7SessionVDA';
         }
     }
-    
+
     if ($PSBoundParameters.ContainsKey('RemoteDesktopUsers')) {
+
         if ($PSBoundParameters.ContainsKey('Credential')) {
+
             Group 'RemoteDesktopUsers' {
                 GroupName = 'Remote Desktop Users';
                 MembersToInclude = $RemoteDesktopUsers;
@@ -55,12 +64,14 @@ configuration XD7LabSessionHost {
             }
         }
         else {
-                Group 'RemoteDesktopUsers' {
+
+            Group 'RemoteDesktopUsers' {
                 GroupName = 'Remote Desktop Users';
                 MembersToInclude = $RemoteDesktopUsers;
                 Ensure = 'Present';
             }
         } #end if Credential
+
     } #end if Remote Desktop Users
 
     Registry 'RDSLicenseServer' {

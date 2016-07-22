@@ -3,7 +3,7 @@ configuration XD7LabStorefront {
         ## Citrix XenDesktop installation source root
         [Parameter(Mandatory)]
         [System.String] $XenDesktopMediaPath,
-        
+
         ## XenDesktop controller address for Director
         [Parameter(Mandatory)]
         [System.String[]] $ControllerAddress
@@ -31,9 +31,10 @@ configuration XD7LabStorefront {
         'Web-ISAPI-Filter',
         'Web-Mgmt-Console',
         'Web-Scripting-Tools'
-        
+
     )
     foreach ($feature in $features) {
+
         WindowsFeature $feature {
             Name = $feature;
             Ensure = 'Present';
@@ -53,6 +54,7 @@ configuration XD7LabStorefront {
     }
 
     foreach ($controller in $ControllerAddress) {
+
         xWebConfigKeyValue "ServiceAutoDiscovery_$controller" {
             ConfigSection = 'AppSettings';
             Key = 'Service.AutoDiscoveryAddresses';

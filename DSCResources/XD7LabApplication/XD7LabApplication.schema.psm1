@@ -3,49 +3,59 @@ configuration XD7LabApplication {
         ## Citrix XenDesktop 7 application name
         [Parameter(Mandatory)]
         [System.String] $Name,
-        
+
         ## Citrix XenDesktop 7 application executable path
         [Parameter(Mandatory)]
         [System.String] $Path,
-        
-        [Parameter()] [ValidateSet('Published','Local')]
+
+        [Parameter()]
+        [ValidateSet('Published','Local')]
         [System.String] $Type = 'Published',
-        
+
         ## Citrix XenDesktop 7 desktop delivery group name
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $DesktopGroupName = 'Default Desktop',
-        
+
         ## Application executable arguments
-        [Parameter()] [AllowNull()]
+        [Parameter()]
+        [AllowNull()]
         [System.String] $Arguments,
 
-        ## Working directory of the application executable 
-        [Parameter()] [AllowNull()]
+        ## Working directory of the application executable
+        [Parameter()]
+        [AllowNull()]
         [System.String] $WorkingDirectory,
-                
-        [Parameter()] [AllowNull()]
+
+        [Parameter()]
+        [AllowNull()]
         [System.String] $Description,
 
-        [Parameter()] [ValidateNotNullOrEmpty()]
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [System.String] $DisplayName = $Name,
-        
-        [Parameter()] [ValidateNotNull()]
+
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Boolean] $Enabled = $true,
-        
-        [Parameter()] [ValidateNotNull()]
+
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Boolean] $Visible = $true,
-        
-        [Parameter()] [ValidateNotNull()]
+
+        [Parameter()]
+        [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $Credential
     )
-    
+
     Import-DscResource -ModuleName XenDesktop7;
-    
+
     $resourceId = '{0}_{1}' -f $DesktopGroupName.Replace(' ','_'), $Name;
-    
+
     if ($PSBoundParameters.ContainsKey('Credential')) {
+
         XD7DesktopGroupApplication $resourceId {
             Name = $Name;
             DesktopGroupName = $DesktopGroupName;
@@ -61,6 +71,7 @@ configuration XD7LabApplication {
         }
     }
     else {
+
         XD7DesktopGroupApplication $resourceId {
             Name = $Name;
             DesktopGroupName = $DesktopGroupName;
@@ -74,5 +85,5 @@ configuration XD7LabApplication {
             DisplayName = $DisplayName;
         }
     }
-    
+
 } #end configuration XD7LabPublishedApp
