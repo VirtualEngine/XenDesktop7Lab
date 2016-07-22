@@ -44,6 +44,19 @@ configuration XD7LabMachineCatalog {
     Import-DscResource -ModuleName XenDesktop7;
     $resourceName = $Name.Replace(' ','_');
 
+    ## Machine catalog members should not be FQDNs
+    $catalogMembers = @();
+    foreach ($member in $Members) {
+
+        if ($member.Contains('.')) {
+            $catalogMembers += $member.Split('.')[0];
+        }
+        else {
+            $catalogMembers += $member;
+        }
+    } #end foreach catalog member
+
+
     if ($PSBoundParameters.ContainsKey('Credential')) {
 
         XD7Catalog "Catalog_$resourceName" {
@@ -58,7 +71,7 @@ configuration XD7LabMachineCatalog {
 
         XD7CatalogMachine "Catalog_$($resourceName)_Machines" {
             Name = $Name;
-            Members = $ComputerName
+            Members = $catalogMembers;
             Credential = $Credential;
             DependsOn = "[XD7Catalog]Catalog_$resourceName";
         }
@@ -76,7 +89,7 @@ configuration XD7LabMachineCatalog {
 
         XD7CatalogMachine "Catalog_$($resourceName)_Machines" {
             Name = $Name;
-            Members = $ComputerName
+            Members = $catalogMembers;
             DependsOn = "[XD7Catalog]Catalog_$resourceName";
         }
     }
