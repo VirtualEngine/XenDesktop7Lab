@@ -20,7 +20,11 @@ configuration XD7LabLicenseServer {
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
-        $Credential
+        $Credential,
+
+        ## Path(s) to Citrix license file(s) are directory paths
+        [Parameter()]
+        [System.Boolean] $IsCitrixLicensePathDirectory
     )
 
     Import-DscResource -ModuleName XenDesktop7;
@@ -41,31 +45,28 @@ configuration XD7LabLicenseServer {
         SourcePath = $XenDesktopMediaPath;
     }
 
-    if ($PSBoundParameters.ContainsKey('Credential')) {
+    $fileType = if ($IsCitrixLicensePathDirectory) { 'Directory' } else { 'File' }
+    foreach ($licenseFile in $CitrixLicensePath) {
 
-        foreach ($licenseFile in $CitrixLicensePath) {
-            $counter = 1;
+        $counter = 1;
+        if ($PSBoundParameters.ContainsKey('Credential')) {
+
             File "XDLicenseFile_$counter" {
-                Type = 'File';
+                Type = $fileType;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
                 Credential = $Credential;
             }
-            $counter++;
         }
-    }
-    else {
+        else {
 
-        foreach ($licenseFile in $CitrixLicensePath) {
-
-            $counter = 1;
             File "XDLicenseFile_$counter" {
-                Type = 'File';
+                Type = $fileType;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
             }
-            $counter++;
         }
+        $counter++;
     }
 
 } #end configuration XD7LabLicenseServer

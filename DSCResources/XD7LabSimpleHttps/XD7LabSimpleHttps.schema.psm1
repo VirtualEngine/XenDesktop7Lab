@@ -38,6 +38,10 @@ configuration XD7LabSimpleHttps {
         [System.Management.Automation.CredentialAttribute()]
         $PfxCertificateCredential,
 
+        ## Path to Citrix XenDesktop license file(s) are directory paths
+        [Parameter()]
+        [System.Boolean] $IsCitrixLicensePathDirectory,
+
         ## Custom StoreFront base url
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -175,6 +179,7 @@ configuration XD7LabSimpleHttps {
         XenDesktopMediaPath = $XenDesktopMediaPath;
         InstallRDSLicensingRole = $InstallRDSLicensingRole;
         CitrixLicensePath = $CitrixLicensePath;
+        IsCitrixLicensePathDirectory = $IsCitrixLicensePathDirectory;
     }
 
     if ($PSBoundParameters.ContainsKey('Credential')) {
