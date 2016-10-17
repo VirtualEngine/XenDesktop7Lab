@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '2.4.4';
+    ModuleVersion = '2.4.5';
     RootModule = 'XenDesktop7Lab.psm1';
     GUID = '1b0a8b41-8590-4e46-b828-01157fb7eec9';
     Author = 'Iain Brighton';

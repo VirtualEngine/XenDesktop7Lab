@@ -45,7 +45,17 @@ configuration XD7LabLicenseServer {
         SourcePath = $XenDesktopMediaPath;
     }
 
-    $fileType = if ($IsCitrixLicensePathDirectory) { 'Directory' } else { 'File' }
+    if ($IsCitrixLicensePathDirectory) {
+
+        $fileType = 'Directory';
+        $fileRecurse = $true;
+    }
+    else {
+
+        $fileType = 'File';
+        $fileRecurse = $false;
+    }
+
     foreach ($licenseFile in $CitrixLicensePath) {
 
         $counter = 1;
@@ -53,6 +63,7 @@ configuration XD7LabLicenseServer {
 
             File "XDLicenseFile_$counter" {
                 Type = $fileType;
+                Recurse =  = $fileRecurse;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
                 Credential = $Credential;
@@ -62,6 +73,7 @@ configuration XD7LabLicenseServer {
 
             File "XDLicenseFile_$counter" {
                 Type = $fileType;
+                Recurse =  = $fileRecurse;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
             }
