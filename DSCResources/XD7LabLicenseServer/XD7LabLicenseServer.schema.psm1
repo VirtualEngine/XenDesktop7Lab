@@ -63,7 +63,7 @@ configuration XD7LabLicenseServer {
 
             File "XDLicenseFile_$counter" {
                 Type = $fileType;
-                Recurse =  = $fileRecurse;
+                Recurse = $fileRecurse;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
                 Credential = $Credential;
@@ -73,7 +73,7 @@ configuration XD7LabLicenseServer {
 
             File "XDLicenseFile_$counter" {
                 Type = $fileType;
-                Recurse =  = $fileRecurse;
+                Recurse = $fileRecurse;
                 SourcePath = $licenseFile;
                 DestinationPath = "${env:ProgramFiles(x86)}\Citrix\Licensing\MyFiles";
             }
