@@ -9,7 +9,7 @@ configuration XD7LabStorefront {
         [System.String[]] $ControllerAddress
     )
 
-    Import-DscResource -ModuleName XenDesktop7, xWebAdministration;
+    Import-DscResource -ModuleName PSDesiredStateConfiguration, XenDesktop7, xWebAdministration;
 
     $features = @(
         'NET-Framework-45-ASPNET',

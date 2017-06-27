@@ -113,8 +113,9 @@ configuration XD7LabSimple {
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
     Import-DscResource -Name XD7StoreFrontAuthenticationMethod, XD7StoreFrontReceiverAuthenticationMethod;
-    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefront, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog;
-    Import-DscResource -Name XD7LabDeliveryGroup, XD7LabStorefrontUrl, XD7LabStorefrontRedirect, XD7LabStorefrontWebConfig;
+    Import-DscResource -Name XD7StoreFrontUnifiedExperience, XD7LabSessionHost, XD7LabStorefront;
+    Import-DscResource -Name XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog, XD7LabDeliveryGroup;
+    Import-DscResource -Name XD7LabStorefrontUrl, XD7LabStorefrontRedirect, XD7LabStorefrontWebConfig;
 
     ## Create ServerName and ServerName.DomainName names
     if ($ServerName.Contains('.')) {
