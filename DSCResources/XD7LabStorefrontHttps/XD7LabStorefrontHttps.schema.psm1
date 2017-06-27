@@ -5,26 +5,26 @@ configuration XD7LabStorefrontHttps {
         [ValidateNotNullOrEmpty()]
         [System.String] $XenDesktopMediaPath,
 
-        ## Personal information exchange (Pfx) ertificate file path
-        [Parameter(Mandatory)]
-        [System.String] $PfxCertificatePath,
-
         ## Pfx certificate thumbprint
         [Parameter(Mandatory)]
         [System.String] $PfxCertificateThumbprint,
 
-        ## Pfx certificate password
+        ## XenDesktop controller address for Director connectivity
         [Parameter(Mandatory)]
+        [System.String[]] $ControllerAddress,
+
+        ## Pfx certificate password
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $PfxCertificateCredential,
 
-        ## XenDesktop controller address for Director connectivity
-        [Parameter(Mandatory)]
-        [System.String[]] $ControllerAddress
+        ## Personal information exchange (Pfx) ertificate file path
+        [Parameter()]
+        [System.String] $PfxCertificatePath
     )
 
-    Import-DscResource -ModuleName XenDesktop7, xWebAdministration, xCertificate;
+    Import-DscResource -ModuleName PSDesiredStateConfiguration, XenDesktop7, xWebAdministration, xCertificate;
 
     $features = @(
         'NET-Framework-45-ASPNET',
@@ -79,12 +79,20 @@ configuration XD7LabStorefrontHttps {
         }
     }
 
-    xPfxImport 'PfxCertificate' {
-        Thumbprint = $PfxCertificateThumbprint;
-        Location = 'LocalMachine';
-        Store = 'My';
-        Path = $PfxCertificatePath;
-        Credential = $PfxCertificateCredential;
+    $xWebSiteDependsOn = @('[WindowsFeature]Web-Server');
+
+    if (($PSBoundParameters.ContainsKey('PfxCertificatePath')) -or
+        ($PSBoundParameters.ContainsKey('PfxCertificateCredential'))) {
+
+        xPfxImport 'PfxCertificate' {
+            Thumbprint = $PfxCertificateThumbprint;
+            Location = 'LocalMachine';
+            Store = 'My';
+            Path = $PfxCertificatePath;
+            Credential = $PfxCertificateCredential;
+        }
+
+        $xWebSiteDependsOn += '[xPfxImport]PfxCertificate';
     }
 
     xWebSite 'DefaultWebSite' {
@@ -94,7 +102,7 @@ configuration XD7LabStorefrontHttps {
             MSFT_xWebBindingInformation  { Protocol = 'HTTPS'; Port = 443; CertificateThumbprint = $PfxCertificateThumbprint; CertificateStoreName = 'My'; }
             MSFT_xWebBindingInformation  { Protocol = 'HTTP'; Port = 80; }
         )
-        DependsOn = '[WindowsFeature]Web-Server','[xPfxImport]PfxCertificate';
+        DependsOn = $xWebSiteDependsOn;
     }
 
 } #end configuration XD7LabStorefrontHttps

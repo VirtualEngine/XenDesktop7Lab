@@ -24,16 +24,16 @@ configuration XD7LabSimpleHttps {
         [Parameter(Mandatory)]
         [System.String] $DomainName,
 
-        ## Personal information exchange (Pfx) ertificate file path
-        [Parameter(Mandatory)]
-        [System.String] $PfxCertificatePath,
-
         ## Pfx certificate thumbprint
         [Parameter(Mandatory)]
         [System.String] $PfxCertificateThumbprint,
 
+        ## Personal information exchange (Pfx) ertificate file path to install
+        [Parameter()]
+        [System.String] $PfxCertificatePath,
+
         ## Pfx certificate password
-        [Parameter(Mandatory)]
+        [Parameter()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
         $PfxCertificateCredential,
@@ -132,8 +132,9 @@ configuration XD7LabSimpleHttps {
 
     ## Avoid recursive import of the XenDesktop7Lab resource!
     Import-DscResource -Name XD7StoreFrontAuthenticationMethod, XD7StoreFrontReceiverAuthenticationMethod;
-    Import-DscResource -Name XD7LabSessionHost, XD7LabStorefrontHttps, XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog;
-    Import-DscResource -Name XD7LabDeliveryGroup, XD7LabStorefrontUrl, XD7LabStorefrontRedirect, XD7LabStorefrontWebConfig;
+    Import-DscResource -Name XD7StoreFrontUnifiedExperience, XD7LabSessionHost, XD7LabStorefrontHttps;
+    Import-DscResource -Name XD7LabLicenseServer, XD7LabSite, XD7LabMachineCatalog, XD7LabDeliveryGroup;
+    Import-DscResource -Name XD7LabStorefrontUrl, XD7LabStorefrontRedirect, XD7LabStorefrontWebConfig;
 
     ## Create ServerName and ServerName.DomainName names
     if ($ServerName.Contains('.')) {
@@ -167,12 +168,24 @@ configuration XD7LabSimpleHttps {
         RDSLicenseServer = $RDSLicenseServer;
     }
 
-    XD7LabStoreFrontHttps 'XD7StoreFrontHttps' {
-        XenDesktopMediaPath = $XenDesktopMediaPath;
-        ControllerAddress = $ServerName;
-        PfxCertificatePath = $PfxCertificatePath;
-        PfxCertificateThumbprint = $PfxCertificateThumbprint;
-        PfxCertificateCredential = $PfxCertificateCredential;
+    if (($PSBoundParameters.ContainsKey('PfxCertificatePath')) -or
+        ($PSBoundParameters.ContainsKey('PfxCertificateCredential'))) {
+
+        XD7LabStoreFrontHttps 'XD7StoreFrontHttps' {
+            XenDesktopMediaPath = $XenDesktopMediaPath;
+            ControllerAddress = $ServerName;
+            PfxCertificatePath = $PfxCertificatePath;
+            PfxCertificateThumbprint = $PfxCertificateThumbprint;
+            PfxCertificateCredential = $PfxCertificateCredential;
+        }
+    }
+    else {
+
+        XD7LabStoreFrontHttps 'XD7StoreFrontHttps' {
+            XenDesktopMediaPath = $XenDesktopMediaPath;
+            ControllerAddress = $ServerName;
+            PfxCertificateThumbprint = $PfxCertificateThumbprint;
+        }
     }
 
     XD7LabLicenseServer 'XD7LicenseServer' {
