@@ -5,7 +5,8 @@ v7.7 or v7.8 via PowerShell Desired State Configuration (DSC).
 
 This module contains the following DSC resources:
 
-###Included Resources
+### Included Resources
+
 * XD7LabAdministrator
  * Adds one or more XenDesktop Administrators.
 * XD7LabApplication
@@ -37,7 +38,8 @@ This module contains the following DSC resources:
 * XD7LabStorefrontWebConfig
  * Configures a Storefront 2.x or 3.x web.config file settings.
 
-###Requirements
+### Requirements
+
 There are __dependencies__ on the following DSC resources:
 
 * XenDesktop7 - https://github.com/VirtualEngine/XenDesktop7
