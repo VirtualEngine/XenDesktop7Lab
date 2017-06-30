@@ -20,15 +20,15 @@ configuration XD7LabSite {
         [ValidateNotNullOrEmpty()]
         [System.String] $LicenseServer,
 
-        ## List of Active Directory site administrators
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [System.String[]] $SiteAdministrators,
-
         ## List of all FQDNs and NetBIOS of XenDesktop site controller names for credential delegation
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [System.String[]] $DelegatedComputers,
+
+        ## List of Active Directory site administrators
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [System.String[]] $SiteAdministrators,
 
         ## Citrix XenDesktop Site database name
         [Parameter()]
@@ -136,18 +136,22 @@ configuration XD7LabSite {
             DependsOn = '[XD7Site]XD7Site';
         }
 
-        foreach ($administrator in $SiteAdministrators) {
+        if ($PSBoundParameters.ContainsKey('SiteAdministrators')) {
 
-            XD7Administrator $administrator.Replace(' ','') {
-                Name = $administrator;
+            foreach ($administrator in $SiteAdministrators) {
+
+                XD7Administrator $administrator.Replace(' ','') {
+                    Name = $administrator;
+                    Credential = $Credential;
+                }
+            }
+
+            XD7Role 'FullAdministrators' {
+                Name = 'Full Administrator';
+                Members =  $SiteAdministrators;
                 Credential = $Credential;
             }
-        }
-
-        XD7Role 'FullAdministrators' {
-            Name = 'Full Administrator';
-            Members =  $SiteAdministrators;
-            Credential = $Credential;
+        
         }
 
         if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {
@@ -203,16 +207,20 @@ configuration XD7LabSite {
             DependsOn = '[XD7Site]XD7Site';
         }
 
-        foreach ($administrator in $SiteAdministrators) {
+        if ($PSBoundParameters.ContainsKey('SiteAdministrators')) {
+            
+            foreach ($administrator in $SiteAdministrators) {
 
-            XD7Administrator $administrator.Replace(' ','') {
-                Name = $administrator;
+                XD7Administrator $administrator.Replace(' ','') {
+                    Name = $administrator;
+                }
             }
-        }
 
-        XD7Role 'FullAdministrators' {
-            Name = 'Full Administrator';
-            Members =  $SiteAdministrators;
+            XD7Role 'FullAdministrators' {
+                Name = 'Full Administrator';
+                Members =  $SiteAdministrators;
+            }
+
         }
 
         if ($PSBoundParameters.ContainsKey('TrustRequestsSentToXmlServicePort')) {

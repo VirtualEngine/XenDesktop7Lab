@@ -202,16 +202,35 @@ configuration XD7LabSimpleHttps {
             $Credential = New-Object System.Management.Automation.PSCredential($credentialUPN, $Credential.Password);
         }
 
-        XD7LabSite 'XD7Site' {
-            XenDesktopMediaPath = $XenDesktopMediaPath;
-            Credential = $Credential;
-            SiteName = $SiteName;
-            DatabaseServer = $DatabaseServerName;
-            LicenseServer = $ServerName;
-            SiteAdministrators = $SiteAdministrator;
-            DelegatedComputers = $credSSPDelegatedComputers;
-            LicenseModel = $LicenseModel;
-            TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+        if ($PSBoundParameters.ContainsKey('SiteAdministrator')) {
+
+            XD7LabSite 'XD7Site' {
+                XenDesktopMediaPath = $XenDesktopMediaPath;
+                Credential = $Credential;
+                SiteName = $SiteName;
+                DatabaseServer = $DatabaseServerName;
+                LicenseServer = $ServerName;
+                SiteAdministrators = $SiteAdministrator;
+                DelegatedComputers = $credSSPDelegatedComputers;
+                LicenseModel = $LicenseModel;
+                TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+            }
+
+        }
+        else {
+
+            ## Delegation cannot be performed with PSDSCRunAsCredential
+            XD7LabSite 'XD7Site' {
+                XenDesktopMediaPath = $XenDesktopMediaPath;
+                Credential = $Credential;
+                SiteName = $SiteName;
+                DatabaseServer = $DatabaseServerName;
+                LicenseServer = $ServerName;
+                DelegatedComputers = $credSSPDelegatedComputers;
+                LicenseModel = $LicenseModel;
+                TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+            }
+
         }
 
         XD7LabMachineCatalog 'XD7Catalog' {
@@ -232,15 +251,32 @@ configuration XD7LabSimpleHttps {
     }
     else {
 
-        XD7LabSite 'XD7Site' {
-            XenDesktopMediaPath = $XenDesktopMediaPath;
-            SiteName = $SiteName;
-            DatabaseServer = $DatabaseServerName;
-            LicenseServer = $ServerName;
-            SiteAdministrators = 'Domain Admins';
-            DelegatedComputers = $credSSPDelegatedComputers;
-            LicenseModel = $LicenseModel;
-            TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+        if ($PSBoundParameters.ContainsKey('SiteAdministrator')) {
+
+            XD7LabSite 'XD7Site' {
+                XenDesktopMediaPath = $XenDesktopMediaPath;
+                SiteName = $SiteName;
+                DatabaseServer = $DatabaseServerName;
+                LicenseServer = $ServerName;
+                SiteAdministrators = $SiteAdministrator;
+                DelegatedComputers = $credSSPDelegatedComputers;
+                LicenseModel = $LicenseModel;
+                TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+            }
+
+        }
+        else {
+
+            XD7LabSite 'XD7Site' {
+                XenDesktopMediaPath = $XenDesktopMediaPath;
+                SiteName = $SiteName;
+                DatabaseServer = $DatabaseServerName;
+                LicenseServer = $ServerName;
+                DelegatedComputers = $credSSPDelegatedComputers;
+                LicenseModel = $LicenseModel;
+                TrustRequestsSentToXmlServicePort = $TrustRequestsSentToXmlServicePort;
+            }
+
         }
 
         XD7LabMachineCatalog 'XD7Catalog' {
