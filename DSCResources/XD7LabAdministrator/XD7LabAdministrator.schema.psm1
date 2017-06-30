@@ -23,36 +23,38 @@ configuration XD7LabAdministrator {
     Import-DscResource -ModuleName XenDesktop7;
 
     $netBIOSDomainName = $DomainName.Split('.')[0];
+    $netBIOSDomainAdministrators = @(); ## Full Administrators with domain qualifier
+    $domainCredential = $Credential;    ## Credential with domain qualifier
 
-    ## Full Administrators with domain qualifier
-    $netBIOSDomainAdministrators = @();
+    if (($PSBoundParameters.ContainsKey('Credential')) -and
+        (-not $Credential.UserName.Contains('\')) -and
+        (-not $Credential.UserName.Contains('@'))) {
 
-    ## Credential with domain qualifier
-    $domainCredential = $Credential;
-
-    if ((-not $Credential.UserName.Contains('\')) -and (-not $Credential.UserName.Contains('@'))) {
-        ## Create DOMAIN\UserName credential
-        $netBIOSUsername = '{0}\{1}' -f $netBIOSDomainName, $Credential.UserName;
-        $domainCredential = New-Object System.Management.Automation.PSCredential($netBIOSUsername, $Credential.Password);
+            ## Create DOMAIN\UserName credential
+            $netBIOSUsername = '{0}\{1}' -f $netBIOSDomainName, $Credential.UserName;
+            $domainCredential = New-Object System.Management.Automation.PSCredential($netBIOSUsername, $Credential.Password);
+        }
     }
 
-    foreach ($administrator in $FullAdministrator) {
+    foreach ($admin in $Administrator) {
 
         $resourceId = $administrator.Replace('\','_').Replace('@','_');
+        $netBIOSAdministrator = $admin;
+        if ((-not $admin.UserName.Contains('\')) -and (-not $admin.UserName.Contains('@'))) {
 
-        $netBIOSAdministrator = $administrator;
-        if ((-not $administrator.UserName.Contains('\')) -and (-not $administrator.UserName.Contains('@'))) {
             ## Ensure we have DOMAIN\UserOrGroup
-            $netBIOSAdministrator = '{0}\{1}' -f $netBIOSDomainName, $administrator;
+            $netBIOSAdministrator = '{0}\{1}' -f $netBIOSDomainName, $admin;
         }
 
         if ($PSBoundParameters.ContainsKey('Credential')) {
+
             XD7Administrator $resourceId {
                 Name = $netBIOSAdministrator;
                 Credential = $Credential;
             }
         }
         else {
+
             XD7Administrator $resourceId {
                 Name = $netBIOSAdministrator;
             }
@@ -60,10 +62,11 @@ configuration XD7LabAdministrator {
 
         $netBIOSDomainAdministrators += $netBIOSAdministrator;
 
-    } #end foreach Full Administrator
+    } #end foreach Administrator
 
     $resourceId = '{0}Administrator' -f $Role;
     switch ($Role) {
+
         'DeliveryGroup' { $roleName = 'Delivery Group Administrator'; }
         'Full' { $roleName = 'Full Administrator'; }
         'HelpDesk' { $roleName = 'Help Desk Administrator'; }
