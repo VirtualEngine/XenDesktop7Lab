@@ -1,11 +1,19 @@
+# XenDesktop7Lab
+
 The XenDesktop7Lab composite DSC resources mask some of the underlying implementation/complexities
 of the individual [XenDesktop7](https://github.com/VirtualEngine/XenDesktop7) DSC resources.
-The composite XenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.0, v7.1, v7.5, v7.6,
-v7.7 or v7.8 via PowerShell Desired State Configuration (DSC).
+The composite XenDesktop7Lab resources can be used to deploy Citrix XenDesktop v7.x via PowerShell
+Desired State Configuration (DSC).
+
+__NOTE: You cannot use PowerShell v5.0's `PsDscRunAsCredential` to deploy the XD7StoreFront*
+resources. Although these resources do not require a credential, it does mean that the
+`PsDscRunAsCredential` parameter cannot be used with the `XD7LabSimple` or the `XD7LabSimpleHttps`
+composite resource either.__
+
+
+## Included Resources
 
 This module contains the following DSC resources:
-
-### Included Resources
 
 * XD7LabAdministrator
   * Adds one or more XenDesktop Administrators.
@@ -38,7 +46,7 @@ This module contains the following DSC resources:
 * XD7LabStorefrontWebConfig
   * Configures a Storefront 2.x or 3.x web.config file settings.
 
-### Requirements
+## Requirements
 
 There are __dependencies__ on the following DSC resources:
 
