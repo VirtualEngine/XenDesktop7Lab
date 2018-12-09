@@ -21,7 +21,7 @@ configuration XD7LabSite {
         [System.String] $LicenseServer,
 
         ## List of all FQDNs and NetBIOS of XenDesktop site controller names for credential delegation
-        [Parameter(Mandatory)]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.String[]] $DelegatedComputers,
 
@@ -68,15 +68,20 @@ configuration XD7LabSite {
         $Credential
     )
 
-    Import-DscResource -ModuleName xCredSSP, XenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
 
-    xCredSSP 'CredSSPServer' {
-        Role = 'Server';
-    }
+    if ($PSBoundParameters.ContainsKey('DelegatedComputers')) {
 
-    xCredSSP 'CredSSPClient' {
-        Role = 'Client';
-        DelegateComputers = $DelegatedComputers;
+        Import-DscResource -ModuleName xCredSSP;
+
+        xCredSSP 'CredSSPServer' {
+            Role = 'Server';
+        }
+       
+        xCredSSP 'CredSSPClient' {
+            Role = 'Client';
+            DelegateComputers = $DelegatedComputers;
+        }
     }
 
     XD7Feature 'XD7Controller' {
@@ -97,7 +102,7 @@ configuration XD7LabSite {
             DatabaseName = $SiteDatabaseName;
             Credential = $Credential;
             DataStore = 'Site';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Database 'XD7SiteLoggingDatabase' {
@@ -106,7 +111,7 @@ configuration XD7LabSite {
             DatabaseName = $LoggingDatabaseName;
             Credential = $Credential;
             DataStore = 'Logging';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Database 'XD7SiteMonitorDatabase' {
@@ -115,7 +120,7 @@ configuration XD7LabSite {
             DatabaseName = $MonitorDatabaseName;
             Credential = $Credential;
             DataStore = 'Monitor';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Site 'XD7Site' {
@@ -125,7 +130,7 @@ configuration XD7LabSite {
             LoggingDatabaseName = $LoggingDatabaseName;
             MonitorDatabaseName = $MonitorDatabaseName;
             Credential = $Credential;
-            DependsOn = '[XD7Feature]XD7Controller','[XD7Database]XD7SiteDatabase','[XD7Database]XD7SiteLoggingDatabase','[XD7Database]XD7SiteMonitorDatabase';
+            DependsOn = DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio', '[XD7Database]XD7SiteDatabase', '[XD7Database]XD7SiteLoggingDatabase', '[XD7Database]XD7SiteMonitorDatabase';
         }
 
         XD7SiteLicense 'XD7SiteLicense' {
@@ -172,7 +177,7 @@ configuration XD7LabSite {
             DatabaseServer = $DatabaseServer;
             DatabaseName = $SiteDatabaseName;
             DataStore = 'Site';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Database 'XD7SiteLoggingDatabase' {
@@ -180,7 +185,7 @@ configuration XD7LabSite {
             DatabaseServer = $DatabaseServer;
             DatabaseName = $LoggingDatabaseName;
             DataStore = 'Logging';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Database 'XD7SiteMonitorDatabase' {
@@ -188,7 +193,7 @@ configuration XD7LabSite {
             DatabaseServer = $DatabaseServer;
             DatabaseName = $MonitorDatabaseName;
             DataStore = 'Monitor';
-            DependsOn = '[XD7Feature]XD7Controller';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio';
         }
 
         XD7Site 'XD7Site' {
@@ -197,7 +202,7 @@ configuration XD7LabSite {
             SiteDatabaseName = $SiteDatabaseName;
             LoggingDatabaseName = $LoggingDatabaseName;
             MonitorDatabaseName = $MonitorDatabaseName;
-            DependsOn = '[XD7Feature]XD7Controller','[XD7Database]XD7SiteDatabase','[XD7Database]XD7SiteLoggingDatabase','[XD7Database]XD7SiteMonitorDatabase';
+            DependsOn = DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio', '[XD7Database]XD7SiteDatabase', '[XD7Database]XD7SiteLoggingDatabase', '[XD7Database]XD7SiteMonitorDatabase';
         }
 
         XD7SiteLicense 'XD7SiteLicense' {

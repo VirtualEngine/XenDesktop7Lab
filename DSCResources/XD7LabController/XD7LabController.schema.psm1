@@ -16,7 +16,7 @@ configuration XD7LabController {
         [System.String] $ExistingControllerAddress,
 
         ## List of all FQDNs and NetBIOS of XenDesktop site controller names for credential delegation
-        [Parameter(Mandatory)]
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.String[]] $DelegatedComputers,
 
@@ -28,23 +28,28 @@ configuration XD7LabController {
         $Credential
     )
 
-    Import-DscResource -ModuleName xCredSSP, XenDesktop7;
+    Import-DscResource -ModuleName XenDesktop7;
 
-    xCredSSP CredSSPServer {
-        Role = 'Server';
+    if ($PSBoundParameters.ContainsKey('DelegatedComputers')) {
+
+        Import-DscResource -ModuleName xCredSSP;
+
+        xCredSSP CredSSPServer {
+            Role = 'Server';
+        }
+
+        xCredSSP CredSSPClient {
+            Role = 'Client';
+            DelegateComputers = $DelegatedComputers;
+        }
     }
 
-    xCredSSP CredSSPClient {
-        Role = 'Client';
-        DelegateComputers = $DelegatedComputers;
-    }
-
-    XD7Feature XD7Controller {
+    XD7Feature 'XD7Controller' {
         Role = 'Controller';
         SourcePath = $XenDesktopMediaPath;
     }
 
-    XD7Feature XD7Studio {
+    XD7Feature 'XD7Studio' {
         Role = 'Studio';
         SourcePath = $XenDesktopMediaPath;
     }

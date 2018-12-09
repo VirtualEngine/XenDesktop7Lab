@@ -25,12 +25,16 @@ configuration XD7LabSessionHost {
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
-        $Credential
+        $Credential,
+
+        ## Windows features to install on session host
+        [Parameter()]
+        [System.String[]] $WindowsFeature = @('RDS-RD-Server', 'Remote-Assistance', 'Desktop-Experience')
     )
 
     Import-DscResource -ModuleName XenDesktop7;
 
-    foreach ($feature in @('RDS-RD-Server', 'Remote-Assistance', 'Desktop-Experience')) {
+    foreach ($feature in $WindowsFeature) {
 
         WindowsFeature $feature {
             Name = $feature;
