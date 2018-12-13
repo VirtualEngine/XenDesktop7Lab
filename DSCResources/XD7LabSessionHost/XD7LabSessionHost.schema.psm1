@@ -50,7 +50,7 @@ configuration XD7LabSessionHost {
         XD7VDAFeature 'XD7SessionVDA' {
             Role       = 'SessionVDA';
             SourcePath = $XenDesktopMediaPath;
-            DependsOn  = featureDependsOn;
+            DependsOn  = $featureDependsOn;
         }
     }
     else {
