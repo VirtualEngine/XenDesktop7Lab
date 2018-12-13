@@ -34,18 +34,31 @@ configuration XD7LabSessionHost {
 
     Import-DscResource -ModuleName XenDesktop7;
 
+    $featureDependsOn = @();
     foreach ($feature in $WindowsFeature) {
 
         WindowsFeature $feature {
-            Name = $feature;
+            Name   = $feature;
             Ensure = 'Present';
         }
+
+        $featureDependsOn += "[WindowsFeature]$feature";
     }
 
-    XD7VDAFeature 'XD7SessionVDA' {
-        Role = 'SessionVDA';
-        SourcePath = $XenDesktopMediaPath;
-        DependsOn = '[WindowsFeature]RDS-RD-Server';
+    if ($featureDependsOn.Count -ge 1) {
+
+        XD7VDAFeature 'XD7SessionVDA' {
+            Role       = 'SessionVDA';
+            SourcePath = $XenDesktopMediaPath;
+            DependsOn  = featureDependsOn;
+        }
+    }
+    else {
+
+        XD7VDAFeature 'XD7SessionVDA' {
+            Role       = 'SessionVDA';
+            SourcePath = $XenDesktopMediaPath;
+        }
     }
 
     foreach ($controller in $ControllerAddress) {
