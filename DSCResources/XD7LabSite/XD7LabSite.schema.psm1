@@ -202,7 +202,7 @@ configuration XD7LabSite {
             SiteDatabaseName = $SiteDatabaseName;
             LoggingDatabaseName = $LoggingDatabaseName;
             MonitorDatabaseName = $MonitorDatabaseName;
-            DependsOn = DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio', '[XD7Database]XD7SiteDatabase', '[XD7Database]XD7SiteLoggingDatabase', '[XD7Database]XD7SiteMonitorDatabase';
+            DependsOn = '[XD7Feature]XD7Controller', '[XD7Feature]XD7Studio', '[XD7Database]XD7SiteDatabase', '[XD7Database]XD7SiteLoggingDatabase', '[XD7Database]XD7SiteMonitorDatabase';
         }
 
         XD7SiteLicense 'XD7SiteLicense' {
