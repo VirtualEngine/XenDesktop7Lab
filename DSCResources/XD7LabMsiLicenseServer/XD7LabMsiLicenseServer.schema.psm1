@@ -42,10 +42,10 @@ configuration XD7LabMsiLicenseServer {
     }
 
     Package 'CitrixLicenseServerMsi' {
-        Name = 'Citrix Licensing';
+        Name      = 'Citrix Licensing';
         ProductId = ''
-        Path = $MsiPath;
-        Ensure = 'Present';
+        Path      = $MsiPath;
+        Ensure    = 'Present';
     }
     
     if ($IsCitrixLicensePathDirectory) {
