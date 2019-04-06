@@ -1,14 +1,14 @@
 @{
-    ModuleVersion = '2.5.3';
+    ModuleVersion = '2.6.0';
     RootModule = 'XenDesktop7Lab.psm1';
     GUID = '1b0a8b41-8590-4e46-b828-01157fb7eec9';
     Author = 'Iain Brighton';
     CompanyName = 'Virtual Engine';
-    Copyright = '(c) 2018 Virtual Engine Limited. All rights reserved.';
+    Copyright = '(c) 2019 Virtual Engine Limited. All rights reserved.';
     Description = 'Citrix XenDesktop 7 Lab DSC Composite Resources.';
     PowerShellVersion = '4.0';
     CLRVersion = '4.0';
-    RequiredModules = @('XenDesktop7', 'xCredSSP');
+    RequiredModules = @('XenDesktop7');
     PrivateData = @{
         PSData = @{  # Private data to pass to the module specified in RootModule/ModuleToProcess
             Tags = @('VirtualEngine','Citrix','XenDesktop','XenApp','Composite','DSC');

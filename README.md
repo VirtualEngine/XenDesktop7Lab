@@ -10,7 +10,6 @@ resources. Although these resources do not require a credential, it does mean th
 `PsDscRunAsCredential` parameter cannot be used with the `XD7LabSimple` or the `XD7LabSimpleHttps`
 composite resource either.__
 
-
 ## Included Resources
 
 This module contains the following DSC resources:
@@ -27,6 +26,8 @@ This module contains the following DSC resources:
   * Installs RDS and Citrix licensing server and imports license file.
 * XD7LabMachineCatalog
   * Creates a machine catalog and adds machine(s).
+* XD7LabMsiLicenseServer
+  * Installs RDS and Citrix licensing server (from MSI) and imports license file.
 * XD7LabSessionHost
   * Installs RDSH, VDA and assigns RDS license server.
 * XD7LabSimple

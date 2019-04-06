@@ -6,8 +6,8 @@ SHORT DESCRIPTION
     of the individual XenDesktop7 (https://github.com/VirtualEngine/XenDesktop7) DSC resources.
 
 LONG DESCRIPTION
-    The XenDesktop7lab resources can be used to deploy Citrix XenDesktop  v7.0, v7.1, v7.5, v7.6 or v7.7 via
-    PowerShell Desired State Configuration (DSC). This module contains the following DSC resources:
+    The XenDesktop7lab resources can be used to deploy Citrix XenDesktop  v7.x via PowerShell`
+    Desired State Configuration (DSC). This module contains the following DSC resources:
 
     * XD7LabAdministrator - Adds and assigns an administrative role.
     * XD7LabApplication - Publishes an application.    
@@ -15,6 +15,7 @@ LONG DESCRIPTION
     * XD7LabDeliveryGroup - Creates a desktop group, adds machine(s) and creates access and entitlement policies.
     * XD7LabLicenseServer - Installs RDS and Citrix licensing server and imports license file.
     * XD7LabMachineCatalog - Creates a machine catalog and adds machine(s).
+    * XD7LabMsiLicenseServer - Installs RDS and Citrix licensing server (from MSI) and imports license file.
     * XD7LabSessionHost - Installs RDSH, VDA and assigns RDS license server.
     * XD7LabSimple - Creates a simple, single host XenDesktop 7.x deployment.
     * XD7LabSimpleHttps - Creates a simple, single host XenDesktop 7.x deployment using HTTPS for Storefront.  
